@@ -5,7 +5,12 @@ import { Button } from '@mui/material';
 import { crearUser } from '../helpers/firebaseActions';
 import { AuthContext } from '../context/setAuth';
 import { crearUsuario } from '../config/Firebase';
-
+import { Link, useLocation } from 'wouter';
+import Alertas from './Alertas';
+interface Prop {
+  variante: 'success' | 'warning' | 'info' | 'error';
+  texto: string;
+}
 export default function Register() {
   const [user, setUser] = React.useState({
     email: '',
@@ -17,6 +22,11 @@ export default function Register() {
   });
 
   const context = React.useContext(AuthContext);
+  const [componenteAlerta, setComponenteAlerta] = React.useState<Prop>({
+    variante: 'info',
+    texto: '',
+  });
+  const [location, setLocation] = useLocation();
   const InputStyle = {
     '& label.Mui-focused': {
       color: 'black',
@@ -38,9 +48,6 @@ export default function Register() {
     backgroundColor: 'white',
     borderRadius: '5px',
   };
-  //   React.useEffect(() => {
-  //     console.log(user);
-  //   }, [user.uid]);
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
@@ -56,11 +63,25 @@ export default function Register() {
         apellido: user.apellido,
         uid: usuarioCreado,
       });
+      setComponenteAlerta({
+        variante: 'success',
+        texto:
+          'Te registraste correctamente! serás redirigido a la página principal',
+      });
+      setTimeout(() => {
+        setLocation('/');
+      }, 3000);
     }
   }
   return (
     <>
-      <h1>Registro de usuario</h1>
+      {componenteAlerta.texto ? (
+        <Alertas
+          variante={componenteAlerta.variante}
+          texto={componenteAlerta.texto}
+        />
+      ) : null}
+      <h1>Registro de usuario nuevo</h1>
       <Box
         component="form"
         sx={{
@@ -107,7 +128,7 @@ export default function Register() {
           />
           <TextField
             sx={InputStyle}
-            id="outlined-password-input"
+            id="outlined-password"
             label="Password"
             name="password"
             variant="filled"
@@ -134,31 +155,25 @@ export default function Register() {
             type="password"
             error={user.password !== user.repPass}
             helperText={
-              user.password !== user.repPass
-                ? 'El password debe ser el mismo.'
-                : null
+              user.password !== user.repPass ? 'El password no coincide.' : null
             }
           />
         </div>
         <div>
-          <Button variant="contained" type="submit" sx={{ margin: '5px' }}>
+          <Button
+            variant="contained"
+            type="submit"
+            // disabled={user.password !== user.repPass}
+            color={user.password !== user.repPass ? 'error' : 'primary'}
+            sx={{ margin: '5px' }}
+          >
             Registrarse
           </Button>
         </div>
         <small>Si ya tienes cuenta</small>
-        <Button
-          variant="text"
-          onClick={() => {
-            const usuarioprueba = {
-              nombre: 'Chichi',
-              apellido: 'delgado',
-              uid: '2Rp1XW5icocUprorTnMp7pBKegT2',
-            };
-            crearUsuario(usuarioprueba);
-          }}
-        >
-          Ingresa aquí
-        </Button>
+        <Link href="/login">
+          <Button variant="text">Ingresa aquí</Button>
+        </Link>
       </Box>
     </>
   );

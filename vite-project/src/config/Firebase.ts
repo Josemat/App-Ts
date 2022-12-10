@@ -10,6 +10,8 @@ import {
 } from 'firebase/firestore';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import { createContext, useContext } from 'react';
+import { AuthContext } from '../context/setAuth';
 // import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -34,16 +36,17 @@ export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
 export async function usuariologueado() {
-  console.log('aca entra');
+  const context = useContext(AuthContext);
+  console.log('Logueando user');
   const usuarioCol = collection(db, 'personal');
   const usuarioSnapshot = await getDocs(usuarioCol);
   const usuarioList = usuarioSnapshot.docs.forEach((doc) => doc.data());
+  console.log(usuarioList);
   return usuarioList;
 }
 export async function obtenerDatosUsuario(uid: string) {
   const docRef = doc(db, 'personal', uid);
   const docSnap = await getDoc(docRef);
-
   if (docSnap.exists()) {
     console.log('Document data:', docSnap.data());
   } else {
@@ -52,7 +55,8 @@ export async function obtenerDatosUsuario(uid: string) {
   }
 }
 export async function crearUsuario(usuario: Object) {
-  console.log('Creando...');
+  const context = useContext(AuthContext);
+  context?.login(usuario);
   const personalRef = collection(db, 'personal');
   await setDoc(doc(personalRef), usuario);
 }

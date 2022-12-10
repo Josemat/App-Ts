@@ -1,6 +1,6 @@
 import * as React from 'react';
 interface contextito {
-  user: object;
+  user: { nombre: string; apellido: string; uid: string };
   login: Function;
   logOut: Function;
 }

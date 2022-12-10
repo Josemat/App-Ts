@@ -3,14 +3,17 @@ import './App.css';
 import Navbar from './layout/Navbar';
 import Login from './components/Login';
 import Register from './components/Register';
+import { Route, Switch } from 'wouter';
+import Home from './components/Home';
 
 function App() {
   return (
     <div className="App">
       <Navbar />
       <h1> </h1>
-      {/* <Login/> */}
-      <Register />
+      <Route path="/" component={Home} />
+      <Route path="/login" component={Login} />
+      <Route path="/register" component={Register} />
     </div>
   );
 }

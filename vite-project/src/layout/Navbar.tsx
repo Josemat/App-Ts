@@ -11,18 +11,22 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { deepOrange, deepPurple } from '@mui/material/colors';
+
+import { AuthContext } from '../context/setAuth';
+import { Link } from 'wouter';
 
 const pages = ['Productos', 'Envíos', 'Clientes'];
 const settings = ['Perfil', 'Cuenta', 'Logout'];
 
 function ResponsiveAppBar() {
+  const context = React.useContext(AuthContext);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
-  const [auth, setAuth] = React.useState<boolean>(false);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -51,25 +55,26 @@ function ResponsiveAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/*Icono componente */}
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Asistencias
-          </Typography>
+          <Link href="/">
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+            >
+              Asistencias
+            </Typography>
+          </Link>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>//Menu de paginas
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -98,26 +103,28 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             ></Menu>
-          </Box>
+          </Box> */}
           {/* icono componente XS */}
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Asistencias RB
-          </Typography>
+          <Link href="/">
+            <Typography
+              variant="h5"
+              noWrap
+              component="a"
+              href="/"
+              sx={{
+                mr: 2,
+                display: { xs: 'flex', md: 'none' },
+                flexGrow: 1,
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+            >
+              Asistencias
+            </Typography>
+          </Link>
           <Box
             sx={{
               flexGrow: 1,
@@ -134,15 +141,19 @@ function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
-          {!auth ? (
-            <Button color="warning" variant="contained">
-              Login
-            </Button>
+          {!context?.user.nombre ? (
+            <Link href="/login">
+              <Button color="warning" variant="contained" href="/login">
+                Login
+              </Button>
+            </Link>
           ) : (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="" />
+                  <Avatar sx={{ bgcolor: deepOrange[500] }}>
+                    {context?.user.nombre.charAt(0)}
+                  </Avatar>
                 </IconButton>
               </Tooltip>
               <Menu
