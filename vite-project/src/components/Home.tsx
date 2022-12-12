@@ -5,13 +5,7 @@ import Grid from '@mui/material/Grid';
 import { db } from '../config/Firebase';
 import Empleado from './Empleado';
 import { collection, doc, getDocs } from 'firebase/firestore';
-
-interface Props {
-  fecha: string;
-  empresa: string;
-  descripcion: string;
-  numCoche: string;
-}
+import { Props } from '../vite-env';
 
 const Home = () => {
   const resultados: Array<Object> = [];
@@ -21,22 +15,20 @@ const Home = () => {
   async function obtenerAsistencias() {
     const obtenerAsistencia = await getDocs(collection(db, 'Asistencias'));
     obtenerAsistencia.forEach((doc) => resultados.push(doc.data()));
+    // console.log();
   }
-  console.log(resultados.length);
-
   return (
     <>
       <Box sx={{ flexGrow: 1, mb: '20px' }}>
-        {/* {resultados &&
-          resultados.map((e) => (
-            <Empleado
-              key={'10-10-10'}
-              empresa={'' || e.empresa}
-              fecha={'10-10-10'}
-              numCoche={'6541'}
-              descripcion={'se incencio'}
-            />
-          ))} */}
+        {resultados.map((e: Props | any) => (
+          <Empleado
+            key={e.fecha}
+            empresa={e.empresa}
+            fecha={e.fecha}
+            numCoche={e.numCoche}
+            descripcion={e.descripcion}
+          />
+        ))}
       </Box>
     </>
   );
