@@ -1,17 +1,19 @@
 // Import the functions you need from the SDKs you need
+import * as React from 'react';
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore,
   collection,
   getDocs,
   getDoc,
+  updateDoc,
   doc,
   setDoc,
+  query,
+  where,
 } from 'firebase/firestore';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
-import { createContext, useContext } from 'react';
-import { AuthContext } from '../context/setAuth';
 // import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -29,34 +31,43 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-// Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 
 // Initialize Cloud Firestore and get a reference to the service
 export const db = getFirestore(app);
 
-export async function usuariologueado() {
-  const context = useContext(AuthContext);
-  console.log('Logueando user');
-  const usuarioCol = collection(db, 'personal');
-  const usuarioSnapshot = await getDocs(usuarioCol);
-  const usuarioList = usuarioSnapshot.docs.forEach((doc) => doc.data());
-  console.log(usuarioList);
-  return usuarioList;
+export async function obtenerDatosUsuario(uid: string | void) {
+  const q = query(collection(db, 'personal'), where('uid', '==', uid));
+  const querySnapshot = await getDocs(q);
+  let datosUsuario;
+  querySnapshot.forEach((doc) => (datosUsuario = doc.data()));
+  return datosUsuario;
 }
-export async function obtenerDatosUsuario(uid: string) {
-  const docRef = doc(db, 'personal', uid);
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    console.log('Document data:', docSnap.data());
-  } else {
-    // doc.data() will be undefined in this case
-    console.log('No such document!');
-  }
+export async function actualizarDatosUsuario(uid: string | void, user: object) {
+  const q = query(collection(db, 'personal'), where('uid', '==', uid));
+  const querySnapshot = await getDocs(q);
+  let datosUsuario: string = '';
+  querySnapshot.forEach((doc) => (datosUsuario = doc.id));
+  guardaDatos(datosUsuario, user);
 }
+
+async function guardaDatos(id: string, user: object) {
+  const userRef = doc(db, 'personal', id);
+  await updateDoc(userRef, user);
+}
+
+//Crea un user en la coleccion con los datos del registro
 export async function crearUsuario(usuario: Object) {
-  const context = useContext(AuthContext);
-  context?.login(usuario);
   const personalRef = collection(db, 'personal');
   await setDoc(doc(personalRef), usuario);
+}
+//Crea un user en la coleccion con los datos del registro
+export async function crearAsistencia(asistencia: Object) {
+  const personalRef = collection(db, 'Asistencias');
+  await setDoc(doc(personalRef), asistencia);
+}
+
+export async function obtenerAsistencias() {
+  const obtenerAsistencias = await getDocs(collection(db, 'Asistencias'));
+  return obtenerAsistencias;
 }

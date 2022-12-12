@@ -9,6 +9,7 @@ interface Props {
   numCoche: string;
 }
 export default function BasicCard(props: Props) {
+  // console.log(props);
   return (
     <Card sx={{ minWidth: 100 }}>
       <CardContent>

@@ -8,6 +8,7 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
+
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
@@ -16,7 +17,6 @@ import { deepOrange, deepPurple } from '@mui/material/colors';
 import { AuthContext } from '../context/setAuth';
 import { Link } from 'wouter';
 
-const pages = ['Productos', 'Envíos', 'Clientes'];
 const settings = ['Perfil', 'Cuenta', 'Logout'];
 
 function ResponsiveAppBar() {
@@ -74,36 +74,44 @@ function ResponsiveAppBar() {
             </Typography>
           </Link>
 
-          {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>//Menu de paginas
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            ></Menu>
-          </Box> */}
+          {context?.user.nombre ? (
+            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: 'block', md: 'none' },
+                }}
+              >
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Link href="/asistencianueva">
+                    <Typography textAlign="center">Crear asistencia</Typography>
+                  </Link>
+                </MenuItem>
+              </Menu>
+            </Box>
+          ) : null}
           {/* icono componente XS */}
           <Link href="/">
             <Typography
@@ -131,15 +139,16 @@ function ResponsiveAppBar() {
               display: { xs: 'none', md: 'flex', color: 'white' },
             }}
           >
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+            {context?.user.nombre ? (
+              <Link href="/asistencianueva">
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Crear asistencia
+                </Button>
+              </Link>
+            ) : null}
           </Box>
           {!context?.user.nombre ? (
             <Link href="/login">
@@ -151,9 +160,10 @@ function ResponsiveAppBar() {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar sx={{ bgcolor: deepOrange[500] }}>
+                  {/* <Avatar sx={{ bgcolor: deepOrange[500] }}>
                     {context?.user.nombre.charAt(0)}
-                  </Avatar>
+                  </Avatar> */}
+                  <Avatar alt="Remy Sharp" src={context.user.avatar} />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -172,11 +182,20 @@ function ResponsiveAppBar() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
+                <Link href="/perfil">
+                  <MenuItem key="perfil" onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">Perfil</Typography>
                   </MenuItem>
-                ))}
+                </Link>
+                <MenuItem
+                  key="Logout"
+                  onClick={() => {
+                    handleCloseUserMenu;
+                    context.logOut();
+                  }}
+                >
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
               </Menu>
             </Box>
           )}

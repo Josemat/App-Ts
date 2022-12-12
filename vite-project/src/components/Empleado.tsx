@@ -2,24 +2,24 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import BasicCard from './Card';
-const Empleado = () => {
+import { Avatar } from '@mui/material';
+interface Prop {
+  empresa: string;
+  fecha: string;
+  numCoche: string;
+  descripcion: string;
+}
+const Empleado = (props: Prop) => {
+  const { empresa, fecha, numCoche, descripcion } = props;
   return (
     <Box sx={{ flexGrow: 1, mb: '20px' }}>
       <Grid container spacing={2}>
         <Grid item xs={2}>
           <BasicCard
-            empresa="ERSA"
-            fecha="12/12/22"
-            descripcion="Que loco esto que se escriba acá"
-            numCoche="1234"
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <BasicCard
-            empresa="ERSA"
-            fecha="12/12/22"
-            descripcion="Que loco esto que se escriba acá"
-            numCoche="1234"
+            empresa={empresa}
+            fecha={fecha}
+            descripcion={descripcion}
+            numCoche={numCoche}
           />
         </Grid>
       </Grid>

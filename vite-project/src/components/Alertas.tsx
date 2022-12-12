@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
-import { jsx } from '@emotion/react';
 
 interface Prop {
   variante: 'success' | 'warning' | 'info' | 'error';

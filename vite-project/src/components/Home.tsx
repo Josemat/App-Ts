@@ -1,30 +1,42 @@
-import React from 'react';
+import * as React from 'react';
 import BasicCard from './Card';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import { db } from '../config/Firebase';
+import Empleado from './Empleado';
+import { collection, doc, getDocs } from 'firebase/firestore';
+
+interface Props {
+  fecha: string;
+  empresa: string;
+  descripcion: string;
+  numCoche: string;
+}
 
 const Home = () => {
+  const resultados: Array<Object> = [];
+  if (resultados) {
+    obtenerAsistencias();
+  }
+  async function obtenerAsistencias() {
+    const obtenerAsistencia = await getDocs(collection(db, 'Asistencias'));
+    obtenerAsistencia.forEach((doc) => resultados.push(doc.data()));
+  }
+  console.log(resultados.length);
+
   return (
     <>
       <Box sx={{ flexGrow: 1, mb: '20px' }}>
-        <Grid container spacing={2}>
-          <Grid item xs={2}>
-            <BasicCard
-              empresa="ERSA"
-              numCoche="1234"
-              fecha="12/12/22"
-              descripcion="Que loco esto que se escriba acá"
+        {/* {resultados &&
+          resultados.map((e) => (
+            <Empleado
+              key={'10-10-10'}
+              empresa={'' || e.empresa}
+              fecha={'10-10-10'}
+              numCoche={'6541'}
+              descripcion={'se incencio'}
             />
-          </Grid>
-          <Grid item xs={2}>
-            <BasicCard
-              empresa="ERSA"
-              numCoche="1234"
-              fecha="12/12/22"
-              descripcion="Que loco esto que se escriba acá"
-            />
-          </Grid>
-        </Grid>
+          ))} */}
       </Box>
     </>
   );
