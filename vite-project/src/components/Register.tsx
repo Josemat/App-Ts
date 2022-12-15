@@ -67,10 +67,10 @@ export default function Register() {
       setComponenteAlerta({
         variante: 'success',
         texto:
-          'Te registraste correctamente! serás redirigido a la página principal',
+          'Te registraste correctamente! serás redirigido a la página de login',
       });
       setTimeout(() => {
-        setLocation('/');
+        setLocation('/login');
       }, 3000);
     }
   }

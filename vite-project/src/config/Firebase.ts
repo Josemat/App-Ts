@@ -68,6 +68,7 @@ export async function crearAsistencia(asistencia: Object) {
 }
 
 export async function obtenerAsistencias() {
-  const obtenerAsistencias = await getDocs(collection(db, 'Asistencias'));
-  return obtenerAsistencias;
+  const obtenerAsistencia = await getDocs(collection(db, 'Asistencias'));
+  const resultados = obtenerAsistencia.docs.map((evt) => evt.data());
+  return resultados;
 }

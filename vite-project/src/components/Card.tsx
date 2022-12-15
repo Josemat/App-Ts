@@ -2,12 +2,7 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-interface Props {
-  fecha: string;
-  empresa: string;
-  descripcion: string;
-  numCoche: string;
-}
+import { Props } from '../vite-env';
 export default function BasicCard(props: Props) {
   // console.log(props);
   return (
