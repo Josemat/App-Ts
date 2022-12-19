@@ -11,9 +11,13 @@ import {
   setDoc,
   query,
   where,
+  orderBy,
+  deleteDoc,
+  limit,
 } from 'firebase/firestore';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import { Props } from '../vite-env';
 // import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -67,8 +71,41 @@ export async function crearAsistencia(asistencia: Object) {
   await setDoc(doc(personalRef), asistencia);
 }
 
+// export async function obtenerAsistencias() {
+//   const obtenerAsistencia = await getDocs(collection(db, 'Asistencias'));
+//   const resultados = obtenerAsistencia.docs.map((evt) => evt.data());
+//   console.log(resultados);
+//   return resultados;
+// }
+
+const retorno = (el1: any, el2: any): {} => {
+  let objeto = {
+    fecha: el1.fecha,
+    empresa: el1.empresa,
+    descripcion: el1.descripcion,
+    numCoche: el1.numCoche,
+    uid: el1.uid,
+    id: el2,
+  };
+  return objeto;
+};
 export async function obtenerAsistencias() {
-  const obtenerAsistencia = await getDocs(collection(db, 'Asistencias'));
-  const resultados = obtenerAsistencia.docs.map((evt) => evt.data());
+  const q = query(
+    collection(db, 'Asistencias'),
+    orderBy('fecha', 'desc'),
+    limit(10)
+  );
+  const querySnapshot = await getDocs(q);
+  const resultados = querySnapshot.docs.map((doc) =>
+    retorno(doc.data(), doc.id)
+  );
   return resultados;
+}
+
+export async function Borrar(params: string) {
+  try {
+    await deleteDoc(doc(db, 'Asistencias', params));
+  } catch (error) {
+    console.log(error);
+  }
 }

@@ -1,37 +1,55 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import Avatar from '@mui/material/Avatar';
 import BasicCard from './Card';
+
+import Stack from '@mui/material/Stack';
 import { Props } from '../vite-env';
+import { obtenerDatosUsuario } from '../config/Firebase';
+import { AuthContext } from '../context/setAuth';
 
-const Empleado = (props: Props) => {
-  // console.log(props);
-  const mapFromASD = (res: Array<any>): Array<Props> => {
-    return res.map((evt) => {
-      const { fecha, empresa, numCoche, descripcion } = evt;
+interface NumList {
+  empleado: string;
+  array: Array<object>;
+}
+interface Perfil {
+  nombre?: string;
+  avatar?: string;
+}
 
-      return {
-        fecha,
-        empresa,
-        numCoche,
-        descripcion,
-      };
+const Empleado: React.FC<NumList> = ({ empleado, array }) => {
+  const context = React.useContext(AuthContext);
+  const [user, setUser] = React.useState({
+    nombre: '',
+    avatar: '',
+  });
+  React.useEffect(() => {
+    obtenerDatosUsuario(empleado).then((evt: Perfil | any) => {
+      setUser(evt);
     });
-  };
-  const { empresa, fecha, numCoche, descripcion } = props;
+  }, []);
+
   return (
-    <Box sx={{ flexGrow: 1, mb: '20px' }}>
-      <Grid container spacing={2}>
-        <Grid item xs={2}>
-          <BasicCard
-            empresa={empresa}
-            fecha={fecha}
-            descripcion={descripcion}
-            numCoche={numCoche}
-          />
-        </Grid>
-      </Grid>
-    </Box>
+    <Stack
+      direction="column"
+      justifyContent="flex-start"
+      alignItems="center"
+      spacing={1}
+      sx={{ backgroundColor: '#333', paddingTop: 0.5, borderRadius: 2 }}
+    >
+      <Avatar alt={user.nombre} src={user.avatar} />
+      <h3>{user.nombre}</h3>
+      {array.map((element: any) => (
+        <BasicCard
+          key={element.id}
+          id={element.id}
+          empresa={element.empresa}
+          fecha={element.fecha}
+          descripcion={element.descripcion}
+          numCoche={element.numCoche}
+          borrar={context?.user.uid === empleado}
+        />
+      ))}
+    </Stack>
   );
 };
 
