@@ -9,17 +9,13 @@ import { doc, getDoc } from 'firebase/firestore';
 interface Props {
   email: string;
   password: string;
-}
-interface Propsll {
-  email: string;
-  password: string;
-  nombre: string;
-  apellido: string;
+  nombre?: string;
+  apellido?: string;
 }
 db;
 export const auth = getAuth();
 
-export const crearUser = async ({ email, password }: Propsll) => {
+export const crearUser = async ({ email, password }: Props) => {
   return createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in

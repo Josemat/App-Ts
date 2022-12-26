@@ -17,7 +17,7 @@ import {
 } from 'firebase/firestore';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
-import { Props } from '../vite-env';
+import { Pipo, Props } from '../vite-env';
 // import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -39,6 +39,15 @@ export const app = initializeApp(firebaseConfig);
 
 // Initialize Cloud Firestore and get a reference to the service
 export const db = getFirestore(app);
+
+type CollectionData = {
+  id: string;
+  fecha: string;
+  empresa: string;
+  descripcion: string;
+  numCoche: string;
+  uid: string;
+};
 
 export async function obtenerDatosUsuario(uid: string | void) {
   const q = query(collection(db, 'personal'), where('uid', '==', uid));
@@ -71,15 +80,8 @@ export async function crearAsistencia(asistencia: Object) {
   await setDoc(doc(personalRef), asistencia);
 }
 
-// export async function obtenerAsistencias() {
-//   const obtenerAsistencia = await getDocs(collection(db, 'Asistencias'));
-//   const resultados = obtenerAsistencia.docs.map((evt) => evt.data());
-//   console.log(resultados);
-//   return resultados;
-// }
-
 const retorno = (el1: any, el2: any): {} => {
-  let objeto = {
+  let objeto: Props = {
     fecha: el1.fecha,
     empresa: el1.empresa,
     descripcion: el1.descripcion,
@@ -89,17 +91,21 @@ const retorno = (el1: any, el2: any): {} => {
   };
   return objeto;
 };
+
+// interface Props extends Array<Props>{}
 export async function obtenerAsistencias() {
   const q = query(
     collection(db, 'Asistencias'),
     orderBy('fecha', 'desc'),
-    limit(10)
+    limit(20)
   );
   const querySnapshot = await getDocs(q);
-  const resultados = querySnapshot.docs.map((doc) =>
-    retorno(doc.data(), doc.id)
-  );
-  return resultados;
+  const data: CollectionData[] = [];
+  querySnapshot.forEach((doc) => {
+    data.push(retorno(doc.data(), doc.id) as CollectionData);
+  });
+
+  return data;
 }
 
 export async function Borrar(params: string) {
@@ -109,3 +115,19 @@ export async function Borrar(params: string) {
     console.log(error);
   }
 }
+
+// ------------------------------------------------------------------
+
+export async function obtenerAsistenciaCoche(numero: string) {
+  const q = query(
+    collection(db, 'Asistencias'),
+    where('numCoche', '==', numero)
+  );
+  const querySnapshot = await getDocs(q);
+  const data: CollectionData[] = [];
+  querySnapshot.forEach((doc) => {
+    data.push(doc.data() as CollectionData);
+  });
+  return data;
+}
+obtenerAsistenciaCoche('1209');

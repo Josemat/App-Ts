@@ -9,19 +9,16 @@ import { AuthContext } from '../context/setAuth';
 
 interface NumList {
   empleado: string;
-  array: Array<object>;
+  array: Array<Props>;
 }
 interface Perfil {
-  nombre?: string;
+  nombre: string;
   avatar?: string;
 }
 
 const Empleado: React.FC<NumList> = ({ empleado, array }) => {
   const context = React.useContext(AuthContext);
-  const [user, setUser] = React.useState({
-    nombre: '',
-    avatar: '',
-  });
+  const [user, setUser] = React.useState<Perfil>({ nombre: '' });
   React.useEffect(() => {
     obtenerDatosUsuario(empleado).then((evt: Perfil | any) => {
       setUser(evt);
@@ -36,9 +33,9 @@ const Empleado: React.FC<NumList> = ({ empleado, array }) => {
       spacing={1}
       sx={{ backgroundColor: '#333', paddingTop: 0.5, borderRadius: 2 }}
     >
-      <Avatar alt={user.nombre} src={user.avatar} />
+      <Avatar alt={user.nombre} src={user.avatar || user.nombre} />
       <h3>{user.nombre}</h3>
-      {array.map((element: any) => (
+      {array.map((element) => (
         <BasicCard
           key={element.id}
           id={element.id}

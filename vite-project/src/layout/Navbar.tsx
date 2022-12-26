@@ -88,7 +88,7 @@ function ResponsiveAppBar() {
               </IconButton>
               <Menu
                 id="menu-appbar"
-                anchorEl={anchorElNav}
+                anchorEl={anchorElNav || null}
                 anchorOrigin={{
                   vertical: 'bottom',
                   horizontal: 'left',
@@ -158,18 +158,15 @@ function ResponsiveAppBar() {
             </Link>
           ) : (
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
+              <Tooltip title={`Panel de ${context.user.nombre}`}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  {/* <Avatar sx={{ bgcolor: deepOrange[500] }}>
-                    {context?.user.nombre.charAt(0)}
-                  </Avatar> */}
-                  <Avatar alt="Remy Sharp" src={context.user.avatar} />
+                  <Avatar alt={context.user.nombre} src={context.user.avatar} />
                 </IconButton>
               </Tooltip>
               <Menu
                 sx={{ mt: '45px' }}
                 id="menu-appbar"
-                anchorEl={anchorElUser}
+                anchorEl={anchorElUser || null}
                 anchorOrigin={{
                   vertical: 'top',
                   horizontal: 'right',

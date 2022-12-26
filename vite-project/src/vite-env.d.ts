@@ -10,5 +10,13 @@ export interface Props {
   id: string;
 }
 export interface Pipo {
-  array: Props;
+  []: Props;
 }
+export type CollectionDat = {
+  fecha: string;
+  empresa: string;
+  descripcion: string;
+  numCoche: string;
+  uid: string;
+  id: string;
+};
