@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   getAuth,
+  signOut,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
@@ -42,5 +43,16 @@ export const ingresarUser = async ({ email, password }: Props) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.error(errorMessage);
+      return errorMessage;
     });
 };
+export function logout() {
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+    })
+    .catch((error) => {
+      console.log(error);
+      // An error happened.
+    });
+}

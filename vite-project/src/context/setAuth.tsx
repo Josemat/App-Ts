@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { logout } from '../helpers/firebaseActions';
+
 interface contextito {
   user: { nombre: string; apellido: string; uid: string; avatar: string };
   login: Function;
@@ -28,7 +30,9 @@ const AuthProvider = ({ children }: Props) => {
     setUser({ nombre, apellido, uid, avatar });
   };
   const logOut = () => {
+    logout();
     setUser({ nombre: '', apellido: '', uid: '', avatar: '' });
+
     localStorage.clear();
   };
   return (

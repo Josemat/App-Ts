@@ -48,7 +48,7 @@ function ResponsiveAppBar() {
       position="sticky"
       sx={{
         backgroundColor: 'rgba(0,0,0,0.3)',
-        borderRadius: '13px',
+        borderRadius: '5px',
         backdropFilter: 'blur(10px)',
       }}
     >
@@ -109,6 +109,11 @@ function ResponsiveAppBar() {
                     <Typography textAlign="center">Crear asistencia</Typography>
                   </Link>
                 </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Link href="/buscarcoche">
+                    <Typography textAlign="center">Buscar coche</Typography>
+                  </Link>
+                </MenuItem>
               </Menu>
             </Box>
           ) : null}
@@ -140,14 +145,24 @@ function ResponsiveAppBar() {
             }}
           >
             {context?.user.nombre ? (
-              <Link href="/asistencianueva">
-                <Button
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  Crear asistencia
-                </Button>
-              </Link>
+              <>
+                <Link href="/asistencianueva">
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                    Crear asistencia
+                  </Button>
+                </Link>
+                <Link href="/buscarcoche">
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                    Buscar coche
+                  </Button>
+                </Link>
+              </>
             ) : null}
           </Box>
           {!context?.user.nombre ? (

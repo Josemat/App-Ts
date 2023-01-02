@@ -5,7 +5,6 @@ import {
   getFirestore,
   collection,
   getDocs,
-  getDoc,
   updateDoc,
   doc,
   setDoc,
@@ -48,13 +47,40 @@ type CollectionData = {
   numCoche: string;
   uid: string;
 };
+type Perfil = {
+  nombre: string;
+  apellido?: string;
+  avatar?: string;
+  uid?: string;
+};
+function parsePerfil(perfil: any): Perfil {
+  const usuario: Perfil = {
+    nombre: `${perfil.nombre}, ${perfil.apellido}`,
+    avatar: perfil.avatar,
+    uid: perfil.uid,
+  };
+  return usuario;
+}
 
 export async function obtenerDatosUsuario(uid: string | void) {
   const q = query(collection(db, 'personal'), where('uid', '==', uid));
   const querySnapshot = await getDocs(q);
-  let datosUsuario;
-  querySnapshot.forEach((doc) => (datosUsuario = doc.data()));
-  return datosUsuario;
+  const perfil: Perfil[] = [];
+  querySnapshot.forEach((doc) =>
+    perfil.push(parsePerfil(doc.data()) as Perfil)
+  );
+
+  return perfil;
+}
+export async function todosUsuarios() {
+  const q = query(collection(db, 'personal'));
+  const querySnapshot = await getDocs(q);
+  const perfil: Perfil[] = [];
+  querySnapshot.forEach((doc) =>
+    perfil.push(parsePerfil(doc.data()) as Perfil)
+  );
+
+  return perfil;
 }
 export async function actualizarDatosUsuario(uid: string | void, user: object) {
   const q = query(collection(db, 'personal'), where('uid', '==', uid));
@@ -119,10 +145,7 @@ export async function Borrar(params: string) {
 // ------------------------------------------------------------------
 
 export async function obtenerAsistenciaCoche(numero: string) {
-  const q = query(
-    collection(db, 'Asistencias'),
-    where('numCoche', '==', numero)
-  );
+  const q = query(collection(db, 'Asistencias'), orderBy('fecha', 'desc'));
   const querySnapshot = await getDocs(q);
   const data: CollectionData[] = [];
   querySnapshot.forEach((doc) => {

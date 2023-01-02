@@ -1,5 +1,4 @@
 import * as React from 'react';
-import BasicCard from './Card';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { db, obtenerAsistencias } from '../config/Firebase';
@@ -27,6 +26,10 @@ const Home = () => {
     };
     llamadaFirebase();
   }, []);
+  const arraysEmpleados = empleados.map((emp) =>
+    res.filter((el) => el.uid === emp)
+  );
+  const menor = Math.min(...arraysEmpleados.map((arr) => arr.length));
   return (
     <>
       <Box sx={{ flexGrow: 1, m: 1 }}>
@@ -42,6 +45,7 @@ const Home = () => {
                 key={emp}
                 empleado={emp}
                 array={res.filter((el) => el.uid === emp)}
+                menor={menor}
               />
             ))}
         </Stack>

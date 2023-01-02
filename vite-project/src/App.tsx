@@ -7,6 +7,7 @@ import { Route, Switch } from 'wouter';
 import Home from './components/Home';
 import Perfil from './components/Perfil';
 import NuevaAsistencia from './components/NuevaAsistencia';
+import BuscarCoche from './components/BuscarCoche';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Route path="/register" component={Register} />
       <Route path="/perfil" component={Perfil} />
       <Route path="/asistencianueva" component={NuevaAsistencia} />
+      <Route path="/buscarcoche" component={BuscarCoche} />
     </div>
   );
 }

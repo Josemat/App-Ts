@@ -9,7 +9,6 @@ import Tooltip from '@mui/material/Tooltip';
 
 import { Props } from '../vite-env';
 import { Borrar } from '../config/Firebase';
-import { useLocation } from 'wouter';
 export default function BasicCard(props: Props) {
   const [borrado, setBorrado] = React.useState(true);
   const handleDelete = () => {

@@ -1,11 +1,15 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import dayjs, { Dayjs } from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Button } from '@mui/material';
 import { AuthContext } from '../context/setAuth';
 import { Link } from 'wouter';
 import Alertas from './Alertas';
 import { crearAsistencia } from '../config/Firebase';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 
 interface Prop {
   variante: 'success' | 'warning' | 'info' | 'error';
@@ -13,10 +17,11 @@ interface Prop {
 }
 
 const NuevaAsistencia = () => {
+  let fecha = new Intl.DateTimeFormat('en-US').format(Date.now());
   const context = React.useContext(AuthContext);
-  let fecha = new Intl.DateTimeFormat('es-AR').format(Date.now());
+  const [fech, setFech] = React.useState<Dayjs | null>(dayjs(fecha));
   const [asistencia, setAsistencia] = React.useState({
-    fecha: '' || fecha,
+    fecha: '' || fech?.format('DD/MM/YYYY'),
     empresa: '',
     descripcion: '',
     numCoche: '',
@@ -53,6 +58,10 @@ const NuevaAsistencia = () => {
   ) {
     setAsistencia({ ...asistencia, [e.target.name]: e.target.value });
   }
+  const handleChangeFecha = (newValue: Dayjs | null) => {
+    setFech(newValue);
+    setAsistencia({ ...asistencia, fecha: newValue?.format('DD/MM/YYYY') });
+  };
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     crearAsistencia(asistencia);
@@ -67,7 +76,7 @@ const NuevaAsistencia = () => {
         texto: '',
       });
       setAsistencia({
-        fecha: '' || fecha,
+        fecha: fecha,
         empresa: '',
         descripcion: '',
         numCoche: '',
@@ -97,16 +106,15 @@ const NuevaAsistencia = () => {
         onSubmit={handleSubmit}
       >
         <div>
-          <TextField
-            sx={InputStyle}
-            id="fecha"
-            variant="filled"
-            type="fecha"
-            name="fecha"
-            label="Fecha"
-            value={asistencia.fecha || ''}
-            onChange={handleChange}
-          />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DesktopDatePicker
+              label="Date desktop"
+              inputFormat="DD/MM/YYYY"
+              value={fech}
+              onChange={handleChangeFecha}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
           <TextField
             sx={InputStyle}
             variant="filled"

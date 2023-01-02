@@ -19,7 +19,7 @@ export default function Login() {
   const [location, setLocation] = useLocation();
   const [componenteAlerta, setComponenteAlerta] = React.useState<Prop>({
     variante: 'info',
-    texto: 'Estás logueado',
+    texto: '',
   });
 
   function handleChange(
@@ -32,66 +32,75 @@ export default function Login() {
     const usuarioLogueado = await ingresarUser(user).then((evt) =>
       obtenerDatosUsuario(evt)
     );
-    context?.login(usuarioLogueado);
-    setComponenteAlerta({
-      variante: 'success',
-      texto: `Te logueaste correctamente ${context?.user.nombre}, se te redigirá a la pagina principal`,
-    });
-    setTimeout(() => {
-      setLocation('/');
-    }, 3000);
+    if (usuarioLogueado[0]) {
+      context?.login(usuarioLogueado[0]);
+      setComponenteAlerta({
+        variante: 'success',
+        texto: `Te logueaste correctamente! se te redigirá a la pagina principal`,
+      });
+      setTimeout(() => {
+        setLocation('/');
+      }, 3000);
+    } else {
+      setComponenteAlerta({
+        variante: 'error',
+        texto: `Usuario o contraseña incorrecta`,
+      });
+      setTimeout(() => {
+        setComponenteAlerta({ variante: 'error', texto: '' });
+      }, 3000);
+    }
   }
   return (
     <>
       <h1>Ingresar al sistema</h1>
-      {context?.user.uid ? (
+      {componenteAlerta.texto ? (
         <Alertas
           variante={componenteAlerta.variante}
           texto={componenteAlerta.texto}
         />
-      ) : (
-        <Box
-          component="form"
-          sx={{
-            '& .MuiTextField-root': { m: 1 },
-          }}
-          autoComplete="off"
-          onSubmit={handleSubmit}
-        >
-          <div>
-            <TextField
-              sx={{ backgroundColor: 'white', borderRadius: '5px' }}
-              required
-              id="emailLogin"
-              type="email"
-              name="email"
-              label="Usuario"
-              value={user.email}
-              onChange={handleChange}
-            />
-            <TextField
-              sx={{ backgroundColor: 'white', borderRadius: '5px' }}
-              id="outlined-password-input"
-              label="Password"
-              name="password"
-              required
-              value={user.password}
-              onChange={handleChange}
-              type="password"
-              autoComplete="current-password"
-            />
-          </div>
-          <div>
-            <Button variant="contained" type="submit" sx={{ margin: '5px' }}>
-              Login
-            </Button>
-          </div>
-          <small>Si no tienes cuenta</small>
-          <Link href="/register">
-            <Button variant="text">Registrate aquí</Button>
-          </Link>
-        </Box>
-      )}
+      ) : null}
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { m: 1 },
+        }}
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
+        <div>
+          <TextField
+            sx={{ backgroundColor: 'white', borderRadius: '5px' }}
+            required
+            id="emailLogin"
+            type="email"
+            name="email"
+            label="Usuario"
+            value={user.email}
+            onChange={handleChange}
+          />
+          <TextField
+            sx={{ backgroundColor: 'white', borderRadius: '5px' }}
+            id="outlined-password-input"
+            label="Password"
+            name="password"
+            required
+            value={user.password}
+            onChange={handleChange}
+            type="password"
+            autoComplete="current-password"
+          />
+        </div>
+        <div>
+          <Button variant="contained" type="submit" sx={{ margin: '5px' }}>
+            Login
+          </Button>
+        </div>
+        <small>Si no tienes cuenta</small>
+        <Link href="/register">
+          <Button variant="text">Registrate aquí</Button>
+        </Link>
+      </Box>
     </>
   );
 }
