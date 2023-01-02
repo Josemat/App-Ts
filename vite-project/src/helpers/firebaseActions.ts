@@ -6,7 +6,6 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { db } from '../config/Firebase';
-import { doc, getDoc } from 'firebase/firestore';
 interface Props {
   email: string;
   password: string;
