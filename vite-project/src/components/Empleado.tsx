@@ -15,6 +15,7 @@ interface NumList {
 }
 interface Perfil {
   nombre: string;
+  apellido?: string;
   avatar?: string;
 }
 
@@ -33,22 +34,28 @@ const Empleado: React.FC<NumList> = ({ empleado, array, menor }) => {
   }
   return (
     <Stack
-      direction="column"
+      direction="row"
       justifyContent="flex-start"
       alignItems="center"
       spacing={1.5}
     >
-      <Badge badgeContent={color === 'error' ? 'Siguiente' : '✔'} color={color}>
-        <Avatar
-          alt={user.nombre}
-          src={user.avatar || user.nombre}
-          sx={{
-            width: 56,
-            height: 56,
-          }}
-        />
-      </Badge>
-      <h3>{nombre(user.nombre)}</h3>
+      <div style={{ width: '150px' }}>
+        <Badge
+          badgeContent={color === 'error' ? 'Siguiente' : '✔'}
+          color={color}
+        >
+          <Avatar
+            alt={user.nombre}
+            src={user.avatar || user.nombre}
+            sx={{
+              width: 56,
+              height: 56,
+            }}
+          />
+        </Badge>
+        <h3>{nombre(`${user.nombre}, ${user.apellido}`)}</h3>
+        <h3>{nombre(`${user.apellido}`)}</h3>
+      </div>
       {array.map((element) => (
         <BasicCard
           key={element.id}

@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { db, obtenerAsistencias } from '../config/Firebase';
 import Empleado from './Empleado';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 type CollectionData = {
   fecha: string;
@@ -16,6 +18,7 @@ type CollectionData = {
 const Home = () => {
   const [res, setRes] = React.useState<CollectionData[]>([]);
   const [empleados, setEmpleados] = React.useState<string[]>([]);
+  const [open, setOpen] = React.useState(true);
   React.useEffect(() => {
     const llamadaFirebase = async () => {
       const response = await obtenerAsistencias();
@@ -34,12 +37,12 @@ const Home = () => {
     <>
       <Box sx={{ flexGrow: 1, m: 1 }}>
         <Stack
-          direction="row"
+          direction="column-reverse"
           justifyContent="flex-start"
           alignItems="flex-start"
           spacing={2}
         >
-          {Boolean(res.length) &&
+          {Boolean(res.length) ? (
             empleados.map((emp) => (
               <Empleado
                 key={emp}
@@ -47,7 +50,15 @@ const Home = () => {
                 array={res.filter((el) => el.uid === emp)}
                 menor={menor}
               />
-            ))}
+            ))
+          ) : (
+            <Backdrop
+              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+              open={open}
+            >
+              <CircularProgress color="inherit" />
+            </Backdrop>
+          )}
         </Stack>
       </Box>
     </>

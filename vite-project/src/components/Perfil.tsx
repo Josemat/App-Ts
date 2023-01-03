@@ -14,18 +14,25 @@ interface Prop {
   variante: 'success' | 'warning' | 'info' | 'error';
   texto: string;
 }
-
+type Perfil = {
+  nombre: string;
+  apellido?: string;
+  avatar?: string;
+  uid?: string;
+};
 const Perfil = () => {
   const context = React.useContext(AuthContext);
-  const [user, setUser] = React.useState({
-    nombre: '',
-    apellido: '',
-    avatar: '',
-    uid: '',
-  });
-  if (!user.nombre) {
+  const [user, setUser] = React.useState<Perfil[]>([
+    {
+      nombre: '',
+      apellido: '',
+      avatar: '',
+      uid: '',
+    },
+  ]);
+  if (!user[0].nombre) {
     obtenerDatosUsuario(context?.user.uid).then((evt) => {
-      if (evt) {
+      if (Boolean(evt[0])) {
         setUser(evt);
       }
     });
@@ -63,7 +70,7 @@ const Perfil = () => {
   }
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    actualizarDatosUsuario(user.uid, user);
+    actualizarDatosUsuario(user[0].uid, user);
     context?.login(user);
 
     setComponenteAlerta({
@@ -105,7 +112,7 @@ const Perfil = () => {
             type="nombre"
             name="nombre"
             label="Nombre"
-            value={user.nombre || ''}
+            value={user[0].nombre || ''}
             onChange={handleChange}
           />
           <TextField
@@ -115,7 +122,7 @@ const Perfil = () => {
             type="apellido"
             name="apellido"
             label="Apellido"
-            value={user.apellido || ''}
+            value={user[0].apellido || ''}
             onChange={handleChange}
           />
           <TextField
@@ -125,7 +132,7 @@ const Perfil = () => {
             type="avatar"
             name="avatar"
             label="Avatar"
-            value={user.avatar || ''}
+            value={user[0].avatar || ''}
             onChange={handleChange}
           />
         </div>

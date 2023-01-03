@@ -66,9 +66,7 @@ export async function obtenerDatosUsuario(uid: string | void) {
   const q = query(collection(db, 'personal'), where('uid', '==', uid));
   const querySnapshot = await getDocs(q);
   const perfil: Perfil[] = [];
-  querySnapshot.forEach((doc) =>
-    perfil.push(parsePerfil(doc.data()) as Perfil)
-  );
+  querySnapshot.forEach((doc) => perfil.push(doc.data() as Perfil));
 
   return perfil;
 }
