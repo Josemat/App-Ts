@@ -51,9 +51,12 @@ type Perfil = {
   nombre: string;
   apellido?: string;
   avatar?: string;
-  uid?: string;
+  uid: string;
+  vacaciones?: string;
+  posicion?: number;
 };
 function parsePerfil(perfil: any): Perfil {
+  //No se esta usando
   const usuario: Perfil = {
     nombre: `${perfil.nombre}, ${perfil.apellido}`,
     avatar: perfil.avatar,
@@ -74,10 +77,7 @@ export async function todosUsuarios() {
   const q = query(collection(db, 'personal'));
   const querySnapshot = await getDocs(q);
   const perfil: Perfil[] = [];
-  querySnapshot.forEach((doc) =>
-    perfil.push(parsePerfil(doc.data()) as Perfil)
-  );
-
+  querySnapshot.forEach((doc) => perfil.push(doc.data() as Perfil));
   return perfil;
 }
 export async function actualizarDatosUsuario(uid: string | void, user: object) {
@@ -98,12 +98,11 @@ export async function crearUsuario(usuario: Object) {
   const personalRef = collection(db, 'personal');
   await setDoc(doc(personalRef), usuario);
 }
-//Crea un user en la coleccion con los datos del registro
+
 export async function crearAsistencia(asistencia: Object) {
   const personalRef = collection(db, 'Asistencias');
   await setDoc(doc(personalRef), asistencia);
 }
-
 const retorno = (el1: any, el2: any): {} => {
   let objeto: Props = {
     fecha: el1.fecha,
@@ -115,6 +114,16 @@ const retorno = (el1: any, el2: any): {} => {
   };
   return objeto;
 };
+export async function obtenerAsistenciaUID(uid: string) {
+  const q = query(collection(db, 'Asistencias'), where('uid', '==', uid));
+  const data: CollectionData[] = [];
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((evt) =>
+    data.push(retorno(evt.data(), evt.id) as CollectionData)
+  );
+  return data;
+}
+obtenerAsistenciaUID('umpvXDzxQxTr3BMR6IMmyyNyaNg2');
 
 // interface Props extends Array<Props>{}
 export async function obtenerAsistencias() {

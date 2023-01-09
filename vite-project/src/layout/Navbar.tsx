@@ -194,11 +194,11 @@ function ResponsiveAppBar() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <Link href="/perfil">
-                  <MenuItem key="perfil" onClick={handleCloseUserMenu}>
+                <MenuItem key="perfil" onClick={handleCloseUserMenu}>
+                  <Link href="/perfil">
                     <Typography textAlign="center">Perfil</Typography>
-                  </MenuItem>
-                </Link>
+                  </Link>
+                </MenuItem>
                 <MenuItem
                   key="Logout"
                   onClick={() => {

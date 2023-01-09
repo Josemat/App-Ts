@@ -2,13 +2,12 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-
 import DeleteIcon from '@mui/icons-material/Delete';
-import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-
+import Chip from '@mui/material/Chip';
 import { Props } from '../vite-env';
 import { Borrar } from '../config/Firebase';
+
 export default function BasicCard(props: Props) {
   const [borrado, setBorrado] = React.useState(true);
   const handleDelete = () => {
@@ -24,7 +23,6 @@ export default function BasicCard(props: Props) {
               sx={{ fontSize: 13 }}
               fontWeight="800"
               color="text.secondary"
-              gutterBottom
             >
               {props.fecha}
             </Typography>
@@ -35,9 +33,13 @@ export default function BasicCard(props: Props) {
             <Typography variant="body2">{props.descripcion}</Typography>
             {props.borrar && (
               <Tooltip title="Borrar" placement="top-start">
-                <IconButton onClick={handleDelete}>
-                  <DeleteIcon />
-                </IconButton>
+                <Chip
+                  sx={{ mt: 0.5 }}
+                  label="Eliminar"
+                  onClick={handleDelete}
+                  onDelete={handleDelete}
+                  deleteIcon={<DeleteIcon />}
+                />
               </Tooltip>
             )}
           </CardContent>

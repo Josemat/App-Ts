@@ -1,6 +1,11 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Button } from '@mui/material';
 import { AuthContext } from '../context/setAuth';
 import {
@@ -19,21 +24,29 @@ type Perfil = {
   apellido?: string;
   avatar?: string;
   uid?: string;
+  vacaciones?: string;
+  posicion?: number;
 };
+function parser(user: Perfil[]): Perfil {
+  const { nombre, apellido, avatar, uid, vacaciones, posicion } = user[0];
+  return { nombre, apellido, avatar, uid, vacaciones, posicion };
+}
 const Perfil = () => {
   const context = React.useContext(AuthContext);
-  const [user, setUser] = React.useState<Perfil[]>([
-    {
-      nombre: '',
-      apellido: '',
-      avatar: '',
-      uid: '',
-    },
-  ]);
-  if (!user[0].nombre) {
+  const [user, setUser] = React.useState<Perfil>({
+    nombre: '',
+    apellido: '',
+    avatar: '',
+    uid: '',
+    vacaciones: '',
+    posicion: 0,
+  });
+  // const [vacas, setVacas] = React.useState(user.vacaciones);
+  // console.log(user.vacaciones);
+  if (!user.nombre) {
     obtenerDatosUsuario(context?.user.uid).then((evt) => {
-      if (Boolean(evt[0])) {
-        setUser(evt);
+      if (Boolean(evt)) {
+        setUser(parser(evt));
       }
     });
   }
@@ -63,14 +76,17 @@ const Perfil = () => {
     backgroundColor: 'white',
     borderRadius: '5px',
   };
+
   function handleChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | SelectChangeEvent
   ) {
     setUser({ ...user, [e.target.name]: e.target.value });
   }
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    actualizarDatosUsuario(user[0].uid, user);
+    actualizarDatosUsuario(user.uid, user);
     context?.login(user);
 
     setComponenteAlerta({
@@ -112,7 +128,7 @@ const Perfil = () => {
             type="nombre"
             name="nombre"
             label="Nombre"
-            value={user[0].nombre || ''}
+            value={user.nombre || ''}
             onChange={handleChange}
           />
           <TextField
@@ -122,7 +138,7 @@ const Perfil = () => {
             type="apellido"
             name="apellido"
             label="Apellido"
-            value={user[0].apellido || ''}
+            value={user.apellido || ''}
             onChange={handleChange}
           />
           <TextField
@@ -132,7 +148,42 @@ const Perfil = () => {
             type="avatar"
             name="avatar"
             label="Avatar"
-            value={user[0].avatar || ''}
+            value={user.avatar || ''}
+            onChange={handleChange}
+          />
+          {/* <TextField
+            sx={InputStyle}
+            variant="filled"
+            id="vacaciones"
+            type="text"
+            name="vacaciones"
+            label="Vacaciones"
+            value={user.vacaciones || ''}
+            onChange={handleChange}
+          /> */}
+          <FormControl sx={{ width: '70vw' }}>
+            <InputLabel id="demo-simple-select-label">Vacaciones</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              name="vacaciones"
+              value={user.vacaciones || 'No'}
+              label="vacaciones"
+              onChange={handleChange}
+            >
+              <MenuItem value={'No'}>No</MenuItem>
+              <MenuItem value={'Si'}>Si</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            sx={InputStyle}
+            variant="filled"
+            id="posicion"
+            type="posicion"
+            name="posicion"
+            // disabled
+            label={`Tu posición actual es: ${context?.pos}`}
+            value={context?.pos || ''}
             onChange={handleChange}
           />
         </div>

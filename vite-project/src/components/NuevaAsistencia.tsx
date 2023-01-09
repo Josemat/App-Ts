@@ -21,13 +21,12 @@ const NuevaAsistencia = () => {
   const context = React.useContext(AuthContext);
   const [fech, setFech] = React.useState<Dayjs | null>(dayjs(fecha));
   const [asistencia, setAsistencia] = React.useState({
-    fecha: '' || fech?.format('DD/MM/YYYY'),
+    fecha: '' || fech?.format('YYYYMMDD'),
     empresa: '',
     descripcion: '',
     numCoche: '',
     uid: '' || context?.user.uid,
   });
-
   const [componenteAlerta, setComponenteAlerta] = React.useState<Prop>({
     variante: 'info',
     texto: '',
@@ -60,7 +59,7 @@ const NuevaAsistencia = () => {
   }
   const handleChangeFecha = (newValue: Dayjs | null) => {
     setFech(newValue);
-    setAsistencia({ ...asistencia, fecha: newValue?.format('DD/MM/YYYY') });
+    setAsistencia({ ...asistencia, fecha: newValue?.format('YYYYMMDD') });
   };
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

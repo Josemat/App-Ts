@@ -19,6 +19,7 @@ export default function Register() {
     password: '',
     repPass: '',
     uid: '',
+    vacaciones: 'No',
   });
 
   const context = React.useContext(AuthContext);
