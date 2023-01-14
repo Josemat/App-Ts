@@ -9,6 +9,8 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import { obtenerAsistenciaCoche, todosUsuarios } from '../config/Firebase';
 import { Button } from '@mui/material';
+import { useLocation } from 'wouter';
+import { AuthContext } from '../context/setAuth';
 
 function createData(
   numCoche: string,
@@ -29,20 +31,25 @@ type CollectionData = {
 };
 interface Perfil {
   nombre: string;
+  apellido?: string;
   avatar?: string;
   uid?: string;
 }
 
 export default function BuscarCoche() {
   const [coches, setCoches] = React.useState<CollectionData[]>([]);
+  const [location, navigate] = useLocation();
   const [cocheBuscador, setCochebuscador] = React.useState<CollectionData[]>(
     []
   );
   const [empleado, setEmpleado] = React.useState<Perfil[]>([]);
   const [busca, setBusca] = React.useState<string>();
+  const context = React.useContext(AuthContext);
+
+  if (!context?.user.nombre) navigate('/');
   React.useEffect(() => {
     async function datosCoche() {
-      const datos = await obtenerAsistenciaCoche('1209');
+      const datos = await obtenerAsistenciaCoche();
       setCoches(datos);
       const res = await todosUsuarios();
       setEmpleado(res);
@@ -52,8 +59,8 @@ export default function BuscarCoche() {
   function empleadoNombre(uid: string) {
     const pepe = empleado?.filter((emp) => emp.uid === uid);
     if (pepe[0]) {
-      const { nombre } = pepe[0];
-      return nombre;
+      const { nombre, apellido } = pepe[0];
+      return `${nombre},${apellido}`;
     } else {
       return 'Cargando...';
     }
@@ -87,7 +94,7 @@ export default function BuscarCoche() {
           {!busca
             ? coches.map((row) => (
                 <TableRow
-                  key={row.descripcion}
+                  key={Math.random()}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">

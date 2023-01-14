@@ -39,6 +39,8 @@ export default function BasicCard(props: Props) {
                   onClick={handleDelete}
                   onDelete={handleDelete}
                   deleteIcon={<DeleteIcon />}
+                  color="error"
+                  variant="outlined"
                 />
               </Tooltip>
             )}

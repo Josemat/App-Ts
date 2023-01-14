@@ -8,10 +8,10 @@ import { Props } from '../vite-env';
 import { obtenerAsistenciaUID, obtenerDatosUsuario } from '../config/Firebase';
 import { AuthContext } from '../context/setAuth';
 
-interface NumList {
+interface PropsEmpleado {
   empleado: Array<Perfil>;
-  posicion?: Array<string>;
-  mayor: Function;
+  posicion?: string | number;
+  array: Array<CollectionData>;
 }
 interface Perfil {
   nombre: string;
@@ -30,26 +30,20 @@ type CollectionData = {
   id: string;
 };
 
-const Empleado: React.FC<NumList> = ({ empleado, posicion, mayor }) => {
-  const [asistencias, setAsistencias] = React.useState<CollectionData[]>([]);
+const Empleado: React.FC<PropsEmpleado> = ({ empleado, array, posicion }) => {
+  const [asistencias, setAsistencias] = React.useState<CollectionData[]>(array);
   const context = React.useContext(AuthContext);
   const user = empleado[0];
-  console.log(asistencias.length);
-  mayor(asistencias.length);
-  React.useEffect(() => {
-    async function asistencias() {
-      const q = await obtenerAsistenciaUID(user.uid);
-      q.sort((a, b) => Number(a.fecha) - Number(b.fecha)); //Ordenando el array por fechas
-
-      setAsistencias(q);
-    }
-    asistencias();
-  }, []);
+  const asist = array.sort((a, b) => Number(a.fecha) - Number(b.fecha)); //Ordenando el array por fechas
+  // React.useEffect(() => {
+  //   setAsistencias(asist);
+  // }, [array]);
   // const color = menor === array.length ? 'error' : 'success';
   function nombre(nombre: string) {
     if (nombre.length > 13) return `${nombre.slice(0, 13)}...`;
     else return nombre;
   }
+  const color = posicion === array.length ? 'error' : 'success';
   return (
     <Stack
       direction="row"
@@ -58,7 +52,7 @@ const Empleado: React.FC<NumList> = ({ empleado, posicion, mayor }) => {
       spacing={1.5}
     >
       <div style={{ width: '150px' }}>
-        <Badge badgeContent={'1'} color={'primary'}>
+        <Badge badgeContent={posicion} color={'primary'}>
           <Avatar
             alt={user.nombre}
             src={user.avatar || user.nombre}
@@ -72,13 +66,13 @@ const Empleado: React.FC<NumList> = ({ empleado, posicion, mayor }) => {
         <h3>{nombre(`${user.apellido}`)}</h3>
       </div>
       {user.vacaciones !== 'Si' ? (
-        asistencias.slice(0, 6).map((element) => (
+        asist.slice(0, 6).map((element) => (
           <BasicCard
             key={element.id}
             id={element.id}
             empresa={element.empresa.slice(0, 9)}
             fecha={dayjs(element.fecha).format('DD-MM-YYYY')}
-            descripcion={element.descripcion.slice(0, 30)} //Limitando 30 caracteres
+            descripcion={element.descripcion.slice(0, 25)} //Limitando 25 caracteres
             numCoche={element.numCoche}
             borrar={context?.user.uid === user.uid}
           />

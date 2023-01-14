@@ -1,18 +1,18 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Button } from '@mui/material';
 import { AuthContext } from '../context/setAuth';
+import { getAuth, updateEmail, updatePassword } from 'firebase/auth';
 import {
   actualizarDatosUsuario,
   obtenerDatosUsuario,
 } from '../config/Firebase';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import Alertas from './Alertas';
 
 interface Prop {
@@ -26,23 +26,29 @@ type Perfil = {
   uid?: string;
   vacaciones?: string;
   posicion?: number;
+  email?: string | null | undefined;
 };
 function parser(user: Perfil[]): Perfil {
   const { nombre, apellido, avatar, uid, vacaciones, posicion } = user[0];
-  return { nombre, apellido, avatar, uid, vacaciones, posicion };
+  return { nombre, apellido, avatar, uid, vacaciones };
 }
 const Perfil = () => {
+  const [location, navigate] = useLocation();
   const context = React.useContext(AuthContext);
+  const auth = getAuth();
+  const [pass, newPass] = React.useState('');
+  const [pass2, newPass2] = React.useState('');
   const [user, setUser] = React.useState<Perfil>({
     nombre: '',
     apellido: '',
     avatar: '',
     uid: '',
     vacaciones: '',
-    posicion: 0,
+    email: auth.currentUser?.email,
   });
+  if (!context?.user.nombre) navigate('/');
   // const [vacas, setVacas] = React.useState(user.vacaciones);
-  // console.log(user.vacaciones);
+  // console.log(user);
   if (!user.nombre) {
     obtenerDatosUsuario(context?.user.uid).then((evt) => {
       if (Boolean(evt)) {
@@ -88,7 +94,12 @@ const Perfil = () => {
     e.preventDefault();
     actualizarDatosUsuario(user.uid, user);
     context?.login(user);
-
+    if (user.email && auth.currentUser?.email !== user.email) {
+      auth.currentUser?.email
+        ? updateEmail(auth.currentUser, user.email)
+        : null;
+    }
+    if (pass) cambiaPAss();
     setComponenteAlerta({
       variante: 'success',
       texto: 'Modificaste tu perfil correctamente!',
@@ -100,7 +111,16 @@ const Perfil = () => {
       });
     }, 3000);
   }
-
+  function cambiaPAss() {
+    console.log('first');
+    // const user = auth.currentUser
+    // user?updatePassword(user, pass).then(() => {
+    //   // Update successful.
+    // }).catch((error) => {
+    //   // An error ocurred
+    //   // ...
+    // }):null;
+  }
   return (
     <>
       {componenteAlerta.texto ? (
@@ -151,6 +171,18 @@ const Perfil = () => {
             value={user.avatar || ''}
             onChange={handleChange}
           />
+          <TextField
+            sx={InputStyle}
+            variant="filled"
+            id="email"
+            type="email"
+            name="email"
+            label={`Tu actual correo es: ${
+              auth.currentUser?.email || 'cargando...'
+            }`}
+            value={user.email || ''}
+            onChange={handleChange}
+          />
           {/* <TextField
             sx={InputStyle}
             variant="filled"
@@ -168,6 +200,7 @@ const Perfil = () => {
               id="demo-simple-select"
               name="vacaciones"
               value={user.vacaciones || 'No'}
+              disabled
               label="vacaciones"
               onChange={handleChange}
             >
@@ -175,7 +208,7 @@ const Perfil = () => {
               <MenuItem value={'Si'}>Si</MenuItem>
             </Select>
           </FormControl>
-          <TextField
+          {/* <TextField // Acá podemos usar algun tipo de posicionamiento a futuro
             sx={InputStyle}
             variant="filled"
             id="posicion"
@@ -183,13 +216,41 @@ const Perfil = () => {
             name="posicion"
             // disabled
             label={`Tu posición actual es: ${context?.pos}`}
-            value={context?.pos || ''}
+            value={context?.pos || '0'}
             onChange={handleChange}
+          /> */}
+          <TextField
+            sx={InputStyle}
+            variant="filled"
+            id="passNuevo"
+            type="password"
+            name="passNuevo"
+            helperText={
+              pass.length < 6
+                ? 'La contraseña debe ser de al menos 6 caracteres'
+                : 'Recuerda utilizar por lo menos una mayúscula y numeros'
+            }
+            label={`Cambiar contraseña`}
+            value={pass || ''}
+            onChange={(e) => newPass(e.target.value)}
+          />
+          <TextField
+            sx={InputStyle}
+            variant="filled"
+            id="passNuevo2"
+            type="password"
+            name="passNuevo2"
+            label={`Repite contraseña`}
+            value={pass2 || ''}
+            error={pass !== pass2}
+            helperText={pass !== pass2 ? 'La contraseñas no coinciden' : null}
+            onChange={(e) => newPass2(e.target.value)}
           />
         </div>
         <div>
           <Button
             variant="contained"
+            disabled={pass !== pass2 && pass2.length < 6}
             type="submit"
             // disabled={user.password !== user.repPass}
             color="primary"

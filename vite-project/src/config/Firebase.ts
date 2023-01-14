@@ -151,13 +151,12 @@ export async function Borrar(params: string) {
 
 // ------------------------------------------------------------------
 
-export async function obtenerAsistenciaCoche(numero: string) {
+export async function obtenerAsistenciaCoche() {
   const q = query(collection(db, 'Asistencias'), orderBy('fecha', 'desc'));
   const querySnapshot = await getDocs(q);
   const data: CollectionData[] = [];
   querySnapshot.forEach((doc) => {
-    data.push(doc.data() as CollectionData);
+    data.push(retorno(doc.data(), doc.id) as CollectionData);
   });
   return data;
 }
-obtenerAsistenciaCoche('1209');

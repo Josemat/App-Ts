@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { db, obtenerAsistencias, todosUsuarios } from '../config/Firebase';
+import { db, obtenerAsistenciaCoche, todosUsuarios } from '../config/Firebase';
 import Empleado from './Empleado';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -14,12 +14,20 @@ type Perfil = {
   posicion?: number;
   uid: string;
 };
+type CollectionData = {
+  fecha: string;
+  empresa: string;
+  descripcion: string;
+  numCoche: string;
+  uid: string;
+  id: string;
+};
 
 const Home = () => {
   const [res, setRes] = React.useState<Perfil[]>([]);
+  const [asistencias, setAsistencias] = React.useState<CollectionData[]>([]);
   const [empleados, setEmpleados] = React.useState<string[]>([]);
   const [open, setOpen] = React.useState(true);
-  const [arr, setArr] = React.useState([]);
   // console.log(arr);
   React.useEffect(() => {
     const llamadaFirebase = async () => {
@@ -28,14 +36,18 @@ const Home = () => {
       const data: Array<string> = [];
       response.forEach((el) => data.push(el.uid as string));
       setEmpleados(data);
+      const datos = await obtenerAsistenciaCoche();
+      setAsistencias(datos);
     };
     llamadaFirebase();
   }, []);
-  // const arraysEmpleados = empleados.map((emp) =>
-  //   res.filter((el) => el.uid === emp)
-  // );
-  // const menor = Math.min(...arraysEmpleados.map((arr) => arr.length));
-  // const mayor = Math.max(...arraysEmpleados.map((arr) => arr.length));
+  const arraysEmpleados = empleados.map((emp) =>
+    asistencias.filter((el) => el.uid === emp)
+  );
+  const menor = Math.min(...arraysEmpleados.map((arr) => arr.length));
+  const mayor = Math.max(...arraysEmpleados.map((arr) => arr.length));
+  console.log(menor, 'menor');
+  console.log(mayor, 'mayor');
 
   return (
     <>
@@ -51,7 +63,8 @@ const Home = () => {
               <Empleado
                 key={emp}
                 empleado={res.filter((el) => el.uid === emp)}
-                mayor={setArr}
+                array={asistencias.filter((el) => el.uid === emp)}
+                posicion={mayor}
               />
             ))
           ) : (

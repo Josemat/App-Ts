@@ -6,7 +6,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Button } from '@mui/material';
 import { AuthContext } from '../context/setAuth';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import Alertas from './Alertas';
 import { crearAsistencia } from '../config/Firebase';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -19,6 +19,7 @@ interface Prop {
 const NuevaAsistencia = () => {
   let fecha = new Intl.DateTimeFormat('en-US').format(Date.now());
   const context = React.useContext(AuthContext);
+  const [location, navigate] = useLocation();
   const [fech, setFech] = React.useState<Dayjs | null>(dayjs(fecha));
   const [asistencia, setAsistencia] = React.useState({
     fecha: '' || fech?.format('YYYYMMDD'),
@@ -27,6 +28,7 @@ const NuevaAsistencia = () => {
     numCoche: '',
     uid: '' || context?.user.uid,
   });
+  if (!context?.user.nombre) navigate('/');
   const [componenteAlerta, setComponenteAlerta] = React.useState<Prop>({
     variante: 'info',
     texto: '',
@@ -69,17 +71,17 @@ const NuevaAsistencia = () => {
       variante: 'success',
       texto: 'Se guardó exitosamente!',
     });
+    setAsistencia({
+      fecha: fecha,
+      empresa: '',
+      descripcion: '',
+      numCoche: '',
+      uid: '' || context?.user.uid,
+    });
     setTimeout(() => {
       setComponenteAlerta({
         variante: 'success',
         texto: '',
-      });
-      setAsistencia({
-        fecha: fecha,
-        empresa: '',
-        descripcion: '',
-        numCoche: '',
-        uid: '' || context?.user.uid,
       });
     }, 4000);
   }
