@@ -5,23 +5,7 @@ import { db, obtenerAsistenciaCoche, todosUsuarios } from '../config/Firebase';
 import Empleado from './Empleado';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-
-type Perfil = {
-  nombre: string;
-  apellido?: string;
-  avatar?: string;
-  vacaciones?: string;
-  posicion?: number;
-  uid: string;
-};
-type CollectionData = {
-  fecha: string;
-  empresa: string;
-  descripcion: string;
-  numCoche: string;
-  uid: string;
-  id: string;
-};
+import { CollectionData, Perfil } from '../vite-env';
 
 const Home = () => {
   const [res, setRes] = React.useState<Perfil[]>([]);
@@ -46,8 +30,6 @@ const Home = () => {
   );
   const menor = Math.min(...arraysEmpleados.map((arr) => arr.length));
   const mayor = Math.max(...arraysEmpleados.map((arr) => arr.length));
-  console.log(menor, 'menor');
-  console.log(mayor, 'mayor');
 
   return (
     <>
@@ -64,7 +46,8 @@ const Home = () => {
                 key={emp}
                 empleado={res.filter((el) => el.uid === emp)}
                 array={asistencias.filter((el) => el.uid === emp)}
-                posicion={mayor}
+                mayor={mayor}
+                menor={menor}
               />
             ))
           ) : (

@@ -20,3 +20,18 @@ export type CollectionDat = {
   uid: string;
   id: string;
 };
+type CollectionData = {
+  fecha: string;
+  empresa: string;
+  descripcion: string;
+  numCoche: string;
+  uid: string;
+  id: string;
+};
+type Perfil = {
+  nombre: string;
+  apellido?: string;
+  avatar?: string;
+  uid?: string;
+  vacaciones?: string;
+};

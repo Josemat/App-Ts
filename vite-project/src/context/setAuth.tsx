@@ -14,9 +14,15 @@ interface contextito {
   funcPosicion: Function;
   pos: number;
   setPos: Function;
+  componenteAlerta: Prop;
+  setAlerta: Function;
 }
 interface Props {
   children: JSX.Element[] | JSX.Element;
+}
+interface Prop {
+  variante: 'success' | 'warning' | 'info' | 'error';
+  texto: string;
 }
 interface Login {
   nombre: string;
@@ -37,6 +43,10 @@ const AuthProvider = ({ children }: Props) => {
     avatar: userLocal.avatar || '',
     posicion: pos,
   });
+  const [componenteAlerta, setComponenteAlerta] = React.useState<Prop>({
+    variante: 'info',
+    texto: '',
+  });
   if (user.nombre) localStorage.setItem('user', JSON.stringify(user));
   const login = ({ nombre, apellido, uid, avatar }: Login) => {
     setUser({ nombre, apellido, uid, avatar });
@@ -50,9 +60,27 @@ const AuthProvider = ({ children }: Props) => {
 
     localStorage.clear();
   };
+  function setAlerta(
+    variante: 'success' | 'warning' | 'info' | 'error',
+    texto: string
+  ) {
+    setComponenteAlerta({ variante: variante, texto: texto });
+    setTimeout(() => {
+      setComponenteAlerta({ variante: 'info', texto: '' });
+    }, 3000);
+  }
   return (
     <AuthContext.Provider
-      value={{ user, login, logOut, funcPosicion, pos, setPos }}
+      value={{
+        user,
+        login,
+        logOut,
+        funcPosicion,
+        pos,
+        setPos,
+        componenteAlerta,
+        setAlerta,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -8,33 +8,10 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import { obtenerAsistenciaCoche, todosUsuarios } from '../config/Firebase';
-import { Button } from '@mui/material';
+import dayjs, { Dayjs } from 'dayjs';
 import { useLocation } from 'wouter';
 import { AuthContext } from '../context/setAuth';
-
-function createData(
-  numCoche: string,
-  descripcion: string,
-  empresa: string,
-  fecha: string,
-  uid: string
-) {
-  return { numCoche, descripcion, empresa, fecha, uid };
-}
-type CollectionData = {
-  fecha: string;
-  empresa: string;
-  descripcion: string;
-  numCoche: string;
-  uid: string;
-  id: string;
-};
-interface Perfil {
-  nombre: string;
-  apellido?: string;
-  avatar?: string;
-  uid?: string;
-}
+import { CollectionData, Perfil } from '../vite-env';
 
 export default function BuscarCoche() {
   const [coches, setCoches] = React.useState<CollectionData[]>([]);
@@ -85,7 +62,7 @@ export default function BuscarCoche() {
         <TableHead>
           <TableRow>
             <TableCell>Coche</TableCell>
-            <TableCell align="right">Descripción</TableCell>
+            <TableCell align="center">Descripción</TableCell>
             <TableCell align="right">Fecha</TableCell>
             <TableCell align="right">Nombre y apellido</TableCell>
           </TableRow>
@@ -100,8 +77,10 @@ export default function BuscarCoche() {
                   <TableCell component="th" scope="row">
                     {row.numCoche}
                   </TableCell>
-                  <TableCell align="right">{row.descripcion}</TableCell>
-                  <TableCell align="right">{row.fecha}</TableCell>
+                  <TableCell align="left">{row.descripcion}</TableCell>
+                  <TableCell align="right">
+                    {dayjs(row.fecha).format('DD/MM/YY')}
+                  </TableCell>
                   <TableCell align="right">
                     {empleado ? empleadoNombre(row.uid) : 'Sin nombre'}
                   </TableCell>

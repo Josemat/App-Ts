@@ -10,14 +10,28 @@ import { Borrar } from '../config/Firebase';
 
 export default function BasicCard(props: Props) {
   const [borrado, setBorrado] = React.useState(true);
+  const empresaMinuscula = props.empresa.toLowerCase();
   const handleDelete = () => {
     Borrar(props.id);
     setBorrado(false);
   };
+  const empresa =
+    empresaMinuscula === 'ersa'
+      ? '/ersa.png'
+      : empresaMinuscula === 'tamse'
+      ? '/tamse.png'
+      : empresaMinuscula === 'coniferal'
+      ? '/coniferal.png'
+      : '';
   return (
     <>
       {borrado && (
-        <Card sx={{ width: 150, height: 175 }}>
+        <Card
+          sx={{
+            width: 150,
+            height: 175,
+          }}
+        >
           <CardContent>
             <Typography
               sx={{ fontSize: 13 }}
@@ -29,10 +43,20 @@ export default function BasicCard(props: Props) {
             <Typography variant="h6" noWrap={false} component="div">
               {props.empresa.toUpperCase()}
             </Typography>
+            <img
+              src={empresa}
+              style={{
+                opacity: 0.25,
+                width: 120,
+                position: 'absolute',
+                display: 'block',
+                marginTop: 70,
+              }}
+            />
             <Typography color="text.secondary">{props.numCoche}</Typography>
             <Typography variant="body2">{props.descripcion}</Typography>
             {props.borrar && (
-              <Tooltip title="Borrar" placement="top-start">
+              <Tooltip title="Borrar" placement="bottom-end" arrow>
                 <Chip
                   sx={{ mt: 0.5 }}
                   label="Eliminar"

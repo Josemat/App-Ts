@@ -2,15 +2,15 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
-import { crearUser, ingresarUser } from '../helpers/firebaseActions';
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import { Link, useLocation } from 'wouter';
-import { obtenerDatosUsuario } from '../config/Firebase';
 import { AuthContext } from '../context/setAuth';
 
-export default function Login() {
-  const [user, setUser] = React.useState({ email: '', password: '' });
+export default function Olvido() {
   const context = React.useContext(AuthContext);
+  const [user, setUser] = React.useState({ email: '' });
   const [location, setLocation] = useLocation();
+  const auth = getAuth();
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -19,25 +19,26 @@ export default function Login() {
   }
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const usuarioLogueado = await ingresarUser(user).then((evt) =>
-      obtenerDatosUsuario(evt)
-    );
-    if (usuarioLogueado[0]) {
-      context?.login(usuarioLogueado[0]);
-      context?.setAlerta(
-        'success',
-        `Te logueaste correctamente! se te redigirá a la pagina principal`
-      );
-      setTimeout(() => {
-        setLocation('/');
-      }, 3000);
-    } else {
-      context?.setAlerta('error', `Usuario o contraseña incorrecta`);
-    }
+
+    sendPasswordResetEmail(auth, user.email)
+      .then(() => {
+        context?.setAlerta(
+          'success',
+          `Se te envió un correo con las indicaciones`
+        );
+        setTimeout(() => {
+          setLocation('/');
+        }, 3000);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        context?.setAlerta('error', errorMessage);
+      });
   }
   return (
     <>
-      <h1>Ingresar al sistema</h1>
+      <h1>Recuperar contraseña</h1>
       <Box
         component="form"
         sx={{
@@ -52,36 +53,24 @@ export default function Login() {
             required
             id="emailLogin"
             type="email"
+            aria-required
             name="email"
-            label="Usuario"
+            label="usuario@ejemplo.com"
             value={user.email}
+            helperText={
+              'Ingrese su correo electrónico para recuperar la contraseña'
+            }
             onChange={handleChange}
-          />
-          <TextField
-            sx={{ backgroundColor: 'white', borderRadius: '5px' }}
-            id="outlined-password-input"
-            label="Password"
-            name="password"
-            required
-            value={user.password}
-            onChange={handleChange}
-            type="password"
-            autoComplete="current-password"
           />
         </div>
         <div>
           <Button variant="contained" type="submit" sx={{ margin: '5px' }}>
-            Login
+            Recuperar
           </Button>
         </div>
         <small>Si no tienes cuenta</small>
         <Link href="/register">
           <Button variant="text">Registrate aquí</Button>
-        </Link>
-        <br />
-        <small>¿Olvidaste la contraseña?</small>
-        <Link href="/olvido">
-          <Button variant="text">Recuperar contraseña</Button>
         </Link>
       </Box>
     </>

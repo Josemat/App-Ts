@@ -6,11 +6,6 @@ import { crearUser } from '../helpers/firebaseActions';
 import { AuthContext } from '../context/setAuth';
 import { crearUsuario } from '../config/Firebase';
 import { Link, useLocation } from 'wouter';
-import Alertas from './Alertas';
-interface Prop {
-  variante: 'success' | 'warning' | 'info' | 'error';
-  texto: string;
-}
 export default function Register() {
   const [user, setUser] = React.useState({
     email: '',
@@ -23,10 +18,6 @@ export default function Register() {
   });
 
   const context = React.useContext(AuthContext);
-  const [componenteAlerta, setComponenteAlerta] = React.useState<Prop>({
-    variante: 'info',
-    texto: '',
-  });
   const [location, setLocation] = useLocation();
   const InputStyle = {
     '& label.Mui-focused': {
@@ -64,12 +55,12 @@ export default function Register() {
         apellido: user.apellido,
         uid: usuarioCreado,
         avatar: '',
+        vacaciones: 'no',
       });
-      setComponenteAlerta({
-        variante: 'success',
-        texto:
-          'Te registraste correctamente! serás redirigido a la página de login',
-      });
+      context?.setAlerta(
+        'success',
+        'Te registraste correctamente! serás redirigido a la página de login'
+      );
       setTimeout(() => {
         setLocation('/login');
       }, 3000);
@@ -77,12 +68,6 @@ export default function Register() {
   }
   return (
     <>
-      {componenteAlerta.texto ? (
-        <Alertas
-          variante={componenteAlerta.variante}
-          texto={componenteAlerta.texto}
-        />
-      ) : null}
       <h1>Registro de usuario nuevo</h1>
       <Box
         component="form"

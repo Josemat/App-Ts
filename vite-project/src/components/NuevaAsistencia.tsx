@@ -7,14 +7,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Button } from '@mui/material';
 import { AuthContext } from '../context/setAuth';
 import { Link, useLocation } from 'wouter';
-import Alertas from './Alertas';
 import { crearAsistencia } from '../config/Firebase';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-
-interface Prop {
-  variante: 'success' | 'warning' | 'info' | 'error';
-  texto: string;
-}
 
 const NuevaAsistencia = () => {
   let fecha = new Intl.DateTimeFormat('en-US').format(Date.now());
@@ -29,10 +23,7 @@ const NuevaAsistencia = () => {
     uid: '' || context?.user.uid,
   });
   if (!context?.user.nombre) navigate('/');
-  const [componenteAlerta, setComponenteAlerta] = React.useState<Prop>({
-    variante: 'info',
-    texto: '',
-  });
+
   const InputStyle = {
     '& label.Mui-focused': {
       color: 'black',
@@ -67,10 +58,7 @@ const NuevaAsistencia = () => {
     e.preventDefault();
     crearAsistencia(asistencia);
 
-    setComponenteAlerta({
-      variante: 'success',
-      texto: 'Se guardó exitosamente!',
-    });
+    context?.setAlerta('success', 'Se guardó exitosamente!');
     setAsistencia({
       fecha: fecha,
       empresa: '',
@@ -78,23 +66,12 @@ const NuevaAsistencia = () => {
       numCoche: '',
       uid: '' || context?.user.uid,
     });
-    setTimeout(() => {
-      setComponenteAlerta({
-        variante: 'success',
-        texto: '',
-      });
-    }, 4000);
   }
 
   return (
     <>
       <h2>Creación de asistencias</h2>
-      {componenteAlerta.texto ? (
-        <Alertas
-          variante={componenteAlerta.variante}
-          texto={componenteAlerta.texto}
-        />
-      ) : null}
+
       <Box
         component="form"
         sx={{
@@ -120,6 +97,7 @@ const NuevaAsistencia = () => {
             sx={InputStyle}
             variant="filled"
             id="empresa"
+            required
             type="empresa"
             name="empresa"
             label="Empresa"
@@ -129,6 +107,7 @@ const NuevaAsistencia = () => {
           <TextField
             sx={InputStyle}
             variant="filled"
+            required
             id="numCoche"
             type="number"
             name="numCoche"

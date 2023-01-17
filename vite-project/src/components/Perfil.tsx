@@ -13,18 +13,12 @@ import {
   obtenerDatosUsuario,
 } from '../config/Firebase';
 import { Link, useLocation } from 'wouter';
-import Alertas from './Alertas';
-
-interface Prop {
-  variante: 'success' | 'warning' | 'info' | 'error';
-  texto: string;
-}
 type Perfil = {
   nombre: string;
   apellido?: string;
   avatar?: string;
   uid?: string;
-  vacaciones?: string;
+  vacaciones: string;
   posicion?: number;
   email?: string | null | undefined;
 };
@@ -36,8 +30,6 @@ const Perfil = () => {
   const [location, navigate] = useLocation();
   const context = React.useContext(AuthContext);
   const auth = getAuth();
-  const [pass, newPass] = React.useState('');
-  const [pass2, newPass2] = React.useState('');
   const [user, setUser] = React.useState<Perfil>({
     nombre: '',
     apellido: '',
@@ -57,10 +49,6 @@ const Perfil = () => {
     });
   }
 
-  const [componenteAlerta, setComponenteAlerta] = React.useState<Prop>({
-    variante: 'info',
-    texto: '',
-  });
   const InputStyle = {
     '& label.Mui-focused': {
       color: 'black',
@@ -99,36 +87,11 @@ const Perfil = () => {
         ? updateEmail(auth.currentUser, user.email)
         : null;
     }
-    if (pass) cambiaPAss();
-    setComponenteAlerta({
-      variante: 'success',
-      texto: 'Modificaste tu perfil correctamente!',
-    });
-    setTimeout(() => {
-      setComponenteAlerta({
-        variante: 'success',
-        texto: '',
-      });
-    }, 3000);
+    context?.setAlerta('success', 'Modificaste tu perfil correctamente!');
   }
-  function cambiaPAss() {
-    console.log('first');
-    // const user = auth.currentUser
-    // user?updatePassword(user, pass).then(() => {
-    //   // Update successful.
-    // }).catch((error) => {
-    //   // An error ocurred
-    //   // ...
-    // }):null;
-  }
+
   return (
     <>
-      {componenteAlerta.texto ? (
-        <Alertas
-          variante={componenteAlerta.variante}
-          texto={componenteAlerta.texto}
-        />
-      ) : null}
       <Box
         component="form"
         sx={{
@@ -170,6 +133,9 @@ const Perfil = () => {
             label="Avatar"
             value={user.avatar || ''}
             onChange={handleChange}
+            helperText={
+              'Ingresa la URL de tu imagen que quieres para tu avatar'
+            }
           />
           <TextField
             sx={InputStyle}
@@ -183,25 +149,17 @@ const Perfil = () => {
             value={user.email || ''}
             onChange={handleChange}
           />
-          {/* <TextField
-            sx={InputStyle}
-            variant="filled"
-            id="vacaciones"
-            type="text"
-            name="vacaciones"
-            label="Vacaciones"
-            value={user.vacaciones || ''}
-            onChange={handleChange}
-          /> */}
           <FormControl sx={{ width: '70vw' }}>
-            <InputLabel id="demo-simple-select-label">Vacaciones</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              Vacaciones o licencia
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               name="vacaciones"
               value={user.vacaciones || 'No'}
-              disabled
-              label="vacaciones"
+              // disabled
+              label="Vacaciones o licencia"
               onChange={handleChange}
             >
               <MenuItem value={'No'}>No</MenuItem>
@@ -219,52 +177,22 @@ const Perfil = () => {
             value={context?.pos || '0'}
             onChange={handleChange}
           /> */}
-          <TextField
-            sx={InputStyle}
-            variant="filled"
-            id="passNuevo"
-            type="password"
-            name="passNuevo"
-            helperText={
-              pass.length < 6
-                ? 'La contraseña debe ser de al menos 6 caracteres'
-                : 'Recuerda utilizar por lo menos una mayúscula y numeros'
-            }
-            label={`Cambiar contraseña`}
-            value={pass || ''}
-            onChange={(e) => newPass(e.target.value)}
-          />
-          <TextField
-            sx={InputStyle}
-            variant="filled"
-            id="passNuevo2"
-            type="password"
-            name="passNuevo2"
-            label={`Repite contraseña`}
-            value={pass2 || ''}
-            error={pass !== pass2}
-            helperText={pass !== pass2 ? 'La contraseñas no coinciden' : null}
-            onChange={(e) => newPass2(e.target.value)}
-          />
         </div>
+        <small>Deseas cambiar la contraseña</small>
+        <Link href="/nuevacontrasena">
+          <Button variant="text">cambiar aquí</Button>
+        </Link>
         <div>
           <Button
             variant="contained"
-            disabled={pass !== pass2 && pass2.length < 6}
             type="submit"
-            // disabled={user.password !== user.repPass}
             color="primary"
             sx={{ margin: '5px' }}
           >
             Guardar cambios
           </Button>
           <Link href="/">
-            <Button
-              variant="contained"
-              // disabled={user.password !== user.repPass}
-              color="primary"
-              sx={{ margin: '5px' }}
-            >
+            <Button variant="contained" color="primary" sx={{ margin: '5px' }}>
               Cancelar
             </Button>
           </Link>
