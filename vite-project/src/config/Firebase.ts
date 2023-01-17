@@ -32,6 +32,7 @@ const firebaseConfig = {
   appId: '1:1009214080992:web:5b809c593871946be38d85',
   measurementId: 'G-Q6QHDXHKK3',
 };
+console.log();
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
@@ -52,7 +53,7 @@ type Perfil = {
   apellido?: string;
   avatar?: string;
   uid: string;
-  vacaciones?: string;
+  vacaciones: string;
   posicion?: number;
 };
 function parsePerfil(perfil: any): Perfil {
@@ -61,6 +62,7 @@ function parsePerfil(perfil: any): Perfil {
     nombre: `${perfil.nombre}, ${perfil.apellido}`,
     avatar: perfil.avatar,
     uid: perfil.uid,
+    vacaciones: perfil.vacaciones,
   };
   return usuario;
 }
