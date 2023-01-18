@@ -12,10 +12,7 @@ import Olvido from './components/Olvido';
 import NuevaContrasena from './components/NuevaContrasena';
 import { AuthContext } from './context/setAuth';
 import Alertas from './components/Alertas';
-interface Prop {
-  variante: 'success' | 'warning' | 'info' | 'error';
-  texto: string;
-}
+
 function App() {
   const context = React.useContext(AuthContext);
   return (

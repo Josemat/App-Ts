@@ -24,15 +24,14 @@ import { Pipo, Props } from '../vite-env';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyD4iqWkndZ7XCQkGqNsJo6k3eyToh8zZEs',
-  authDomain: 'asistencias-869c5.firebaseapp.com',
-  projectId: 'asistencias-869c5',
-  storageBucket: 'asistencias-869c5.appspot.com',
-  messagingSenderId: '1009214080992',
-  appId: '1:1009214080992:web:5b809c593871946be38d85',
-  measurementId: 'G-Q6QHDXHKK3',
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_SORAGE_BUDGET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
+  measurementId: import.meta.env.VITE_MEASUREMENT_ID,
 };
-console.log();
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
