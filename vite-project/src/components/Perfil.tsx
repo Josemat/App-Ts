@@ -142,6 +142,7 @@ const Perfil = () => {
             variant="filled"
             id="email"
             type="email"
+            disabled
             name="email"
             label={`Tu actual correo es: ${
               auth.currentUser?.email || 'cargando...'
