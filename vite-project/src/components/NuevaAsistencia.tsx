@@ -1,6 +1,11 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -17,7 +22,7 @@ const NuevaAsistencia = () => {
   const [fech, setFech] = React.useState<Dayjs | null>(dayjs(fecha));
   const [asistencia, setAsistencia] = React.useState({
     fecha: '' || fech?.format('YYYYMMDD'),
-    empresa: '',
+    empresa: 'Otra',
     descripcion: '',
     numCoche: '',
     uid: '' || context?.user.uid,
@@ -93,7 +98,42 @@ const NuevaAsistencia = () => {
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
-          <TextField
+          <div>
+            <FormControl>
+              <FormLabel id="empresa">Empresa</FormLabel>
+              <RadioGroup
+                sx={{ mt: 2, mb: 2 }}
+                aria-labelledby="empresa"
+                row
+                name="empresa"
+                value={asistencia.empresa}
+                defaultValue={'Otra'}
+                onChange={handleChange}
+              >
+                <FormControlLabel
+                  value="ERSA"
+                  control={<Radio />}
+                  label="ERSA"
+                />
+                <FormControlLabel
+                  value="TAMSE"
+                  control={<Radio />}
+                  label="TAMSE"
+                />
+                <FormControlLabel
+                  value="CONIFERAL"
+                  control={<Radio />}
+                  label="CONIFERAL"
+                />
+                <FormControlLabel
+                  value="Otra"
+                  control={<Radio />}
+                  label="Otra"
+                />
+              </RadioGroup>
+            </FormControl>
+          </div>
+          {/* <TextField
             sx={InputStyle}
             variant="filled"
             id="empresa"
@@ -103,7 +143,7 @@ const NuevaAsistencia = () => {
             label="Empresa"
             value={asistencia.empresa.toUpperCase() || ''}
             onChange={handleChange}
-          />
+          /> */}
           <TextField
             sx={InputStyle}
             variant="filled"
@@ -124,6 +164,7 @@ const NuevaAsistencia = () => {
             label="Descripcion"
             value={asistencia.descripcion || ''}
             onChange={handleChange}
+            multiline
           />
         </div>
         <div>

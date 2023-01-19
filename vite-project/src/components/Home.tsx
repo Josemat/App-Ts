@@ -40,7 +40,7 @@ const Home = () => {
           alignItems="flex-start"
           spacing={2}
         >
-          {true ? (
+          {asistencias.length ? (
             empleados.map((emp) => (
               <Empleado
                 key={emp}

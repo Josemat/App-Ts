@@ -23,13 +23,16 @@ const Empleado: React.FC<PropsEmpleado> = ({
 }) => {
   const context = React.useContext(AuthContext);
   const user = empleado[0];
-  const asist = array.sort((a, b) => Number(a.fecha) - Number(b.fecha)); //Ordenando el array por fechas
+  const asist = array
+    .sort((a, b) => Number(a.fecha) - Number(b.fecha))
+    .reverse(); //Ordenando el array por fechas
+  console.log(array);
+  console.log(asist);
   function nombre(nombre: string) {
     if (nombre.length > 13) return `${nombre.slice(0, 13)}...`;
     else return nombre;
   }
   const color = menor === array.length ? 'error' : 'success';
-  console.log(user.vacaciones);
   return (
     <Stack
       direction="row"
@@ -56,21 +59,24 @@ const Empleado: React.FC<PropsEmpleado> = ({
         <h3>{nombre(`${user.apellido}`)}</h3>
       </div>
       {user.vacaciones !== 'Si' ? (
-        asist.slice(0, 6).map(
-          (
-            element // reemplazando el 6 por (array.length - menor + 1)
-          ) => (
-            <BasicCard
-              key={element.id}
-              id={element.id}
-              empresa={element.empresa.slice(0, 9)}
-              fecha={dayjs(element.fecha).format('DD-MM-YYYY')}
-              descripcion={element.descripcion.slice(0, 25)} //Limitando 25 caracteres
-              numCoche={element.numCoche}
-              borrar={context?.user.uid === user.uid}
-            />
+        asist
+          .slice(0, 6)
+          .reverse()
+          .map(
+            (
+              element // reemplazando el 6 por (array.length - menor + 1)
+            ) => (
+              <BasicCard
+                key={element.id}
+                id={element.id}
+                empresa={element.empresa.slice(0, 9)}
+                fecha={dayjs(element.fecha).format('DD-MM-YYYY')}
+                descripcion={element.descripcion.slice(0, 25)} //Limitando 25 caracteres
+                numCoche={element.numCoche}
+                borrar={context?.user.uid === user.uid}
+              />
+            )
           )
-        )
       ) : (
         <BasicCard
           key={Math.random()}
