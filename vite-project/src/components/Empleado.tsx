@@ -29,6 +29,7 @@ const Empleado: React.FC<PropsEmpleado> = ({
     else return nombre;
   }
   const color = menor === array.length ? 'error' : 'success';
+  console.log(user.vacaciones);
   return (
     <Stack
       direction="row"
@@ -39,6 +40,7 @@ const Empleado: React.FC<PropsEmpleado> = ({
       <div style={{ width: '150px' }}>
         <Badge
           badgeContent={menor === array.length ? 'Siguiente' : '✔'}
+          invisible={user.vacaciones === 'Si'}
           color={color}
         >
           <Avatar
