@@ -26,8 +26,6 @@ const Empleado: React.FC<PropsEmpleado> = ({
   const asist = array
     .sort((a, b) => Number(a.fecha) - Number(b.fecha))
     .reverse(); //Ordenando el array por fechas
-  console.log(array);
-  console.log(asist);
   function nombre(nombre: string) {
     if (nombre.length > 13) return `${nombre.slice(0, 13)}...`;
     else return nombre;
