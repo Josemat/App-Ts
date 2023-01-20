@@ -5,7 +5,6 @@ import BasicCard from './Card';
 import dayjs, { Dayjs } from 'dayjs';
 import Stack from '@mui/material/Stack';
 import { CollectionData, Perfil } from '../vite-env';
-import { obtenerAsistenciaUID, obtenerDatosUsuario } from '../config/Firebase';
 import { AuthContext } from '../context/setAuth';
 
 interface PropsEmpleado {
@@ -46,7 +45,11 @@ const Empleado: React.FC<PropsEmpleado> = ({
         >
           <Avatar
             alt={user.nombre}
-            src={user.avatar || user.nombre}
+            src={
+              user.avatar ||
+              'http://ambiel.adv.br/wp-content/uploads/2021/07/avatar-user-1.jpg' ||
+              user.nombre
+            }
             sx={{
               width: 56,
               height: 56,

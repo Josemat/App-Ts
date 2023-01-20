@@ -95,7 +95,9 @@ export default function BuscarCoche() {
                     {row.numCoche}
                   </TableCell>
                   <TableCell align="right">{row.descripcion}</TableCell>
-                  <TableCell align="right">{row.fecha}</TableCell>
+                  <TableCell align="right">
+                    {dayjs(row.fecha).format('DD/MM/YY')}
+                  </TableCell>
                   <TableCell align="right">
                     {empleado ? empleadoNombre(row.uid) : 'Sin nombre'}
                   </TableCell>

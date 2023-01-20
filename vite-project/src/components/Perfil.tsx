@@ -18,7 +18,7 @@ type Perfil = {
   apellido?: string;
   avatar?: string;
   uid?: string;
-  vacaciones: string;
+  vacaciones?: string;
   posicion?: number;
   email?: string | null | undefined;
 };
@@ -179,7 +179,7 @@ const Perfil = () => {
             onChange={handleChange}
           /> */}
         </div>
-        <small>Deseas cambiar la contraseña</small>
+        <small>Deseas cambiar la contraseña?</small>
         <Link href="/nuevacontrasena">
           <Button variant="text">cambiar aquí</Button>
         </Link>

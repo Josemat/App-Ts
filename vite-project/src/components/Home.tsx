@@ -1,11 +1,17 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { db, obtenerAsistenciaCoche, todosUsuarios } from '../config/Firebase';
+import {
+  db,
+  obtenerAsistenciaCoche,
+  todosUsuarios,
+  retorno,
+} from '../config/Firebase';
 import Empleado from './Empleado';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { CollectionData, Perfil } from '../vite-env';
+import { query, collection, orderBy, onSnapshot } from 'firebase/firestore';
 
 const Home = () => {
   const [res, setRes] = React.useState<Perfil[]>([]);
@@ -20,11 +26,19 @@ const Home = () => {
       const data: Array<string> = [];
       response.forEach((el) => data.push(el.uid as string));
       setEmpleados(data);
-      const datos = await obtenerAsistenciaCoche();
-      setAsistencias(datos);
+      // const datos = await obtenerAsistenciaCoche();
+      // setAsistencias(datos);
+      const q = query(collection(db, 'Asistencias'), orderBy('fecha', 'desc'));
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const dato: CollectionData[] = [];
+        querySnapshot.forEach((doc) => {
+          dato.push(retorno(doc.data(), doc.id) as CollectionData);
+        });
+        setAsistencias(dato);
+      });
     };
     llamadaFirebase();
-  }, []);
+  }, [asistencias]);
   const arraysEmpleados = empleados.map((emp) =>
     asistencias.filter((el) => el.uid === emp)
   );
