@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import { obtenerAsistenciaCoche, todosUsuarios } from '../config/Firebase';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { useLocation } from 'wouter';
 import { AuthContext } from '../context/setAuth';
 import { CollectionData, Perfil } from '../vite-env';

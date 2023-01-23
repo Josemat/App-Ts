@@ -26,16 +26,16 @@ const Home = () => {
       const data: Array<string> = [];
       response.forEach((el) => data.push(el.uid as string));
       setEmpleados(data);
-      // const datos = await obtenerAsistenciaCoche();
-      // setAsistencias(datos);
-      const q = query(collection(db, 'Asistencias'), orderBy('fecha', 'desc'));
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const dato: CollectionData[] = [];
-        querySnapshot.forEach((doc) => {
-          dato.push(retorno(doc.data(), doc.id) as CollectionData);
-        });
-        setAsistencias(dato);
-      });
+      const datos = await obtenerAsistenciaCoche();
+      setAsistencias(datos);
+      // const q = query(collection(db, 'Asistencias'), orderBy('fecha', 'desc'));
+      // const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      //   const dato: CollectionData[] = [];
+      //   querySnapshot.forEach((doc) => {
+      //     dato.push(retorno(doc.data(), doc.id) as CollectionData);
+      //   });
+      //   setAsistencias(dato);
+      // });
     };
     llamadaFirebase();
   }, [asistencias]);
