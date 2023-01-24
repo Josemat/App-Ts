@@ -32,7 +32,7 @@ type CollectionData = {
 };
 type Perfil = {
   nombre: string;
-  apellido?: string;
+  apellido: string;
   avatar?: string;
   uid?: string;
   vacaciones?: string;

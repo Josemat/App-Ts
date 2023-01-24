@@ -10,15 +10,44 @@ import {
 import Empleado from './Empleado';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import { CollectionData, Perfil } from '../vite-env';
+import Snackbar from '@mui/material/Snackbar';
+import dayjs from 'dayjs';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import { CollectionData, CollectionData2, Perfil } from '../vite-env';
 import { query, collection, orderBy, onSnapshot } from 'firebase/firestore';
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const Home = () => {
   const [res, setRes] = React.useState<Perfil[]>([]);
-  const [asistencias, setAsistencias] = React.useState<CollectionData[]>([]);
+  const [asistencias, setAsistencias] = React.useState<CollectionData2[]>([]);
   const [empleados, setEmpleados] = React.useState<string[]>([]);
   const [open, setOpen] = React.useState(true);
-  // console.log(arr);
+  const [openAlert, setOpenAlert] = React.useState(false);
+  const [infoAlerta, setInfoAlerta] = React.useState({
+    apellido: '',
+    numCoche: '',
+    empresa: '',
+    creada: 0,
+  });
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenAlert(false);
+  };
+
+  // console.log(asistencias);
   React.useEffect(() => {
     const llamadaFirebase = async () => {
       const response = await todosUsuarios();
@@ -42,12 +71,25 @@ const Home = () => {
       unsubscribe();
     };
   }, []);
+  React.useEffect(() => {
+    if (asistencias.length) {
+      const infoEmpleado = res.filter((el) => el.uid === asistencias[0].uid);
+      setInfoAlerta({
+        apellido: infoEmpleado[0].apellido,
+        numCoche: asistencias[0].numCoche,
+        empresa: asistencias[0].empresa,
+        creada: asistencias[0].createdAt || 0,
+      });
+      setOpenAlert(true);
+    }
+  }, [asistencias]);
   const arraysEmpleados = empleados.map((emp) =>
     asistencias.filter((el) => el.uid === emp)
   );
   const menor = Math.min(...arraysEmpleados.map((arr) => arr.length));
   const mayor = Math.max(...arraysEmpleados.map((arr) => arr.length));
 
+  console.log(infoAlerta);
   return (
     <>
       <Box sx={{ flexGrow: 1, m: 1 }}>
@@ -75,6 +117,24 @@ const Home = () => {
               <CircularProgress color="inherit" />
             </Backdrop>
           )}
+          {asistencias.length ? (
+            <Snackbar
+              open={openAlert}
+              autoHideDuration={15000}
+              onClose={handleClose}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            >
+              <Alert
+                onClose={handleClose}
+                severity="info"
+                sx={{ width: '100%' }}
+              >
+                Última asistencia creada por {infoAlerta.apellido},
+                {infoAlerta.numCoche} de {infoAlerta.empresa} el{' '}
+                {dayjs(infoAlerta.creada).format('DD/MM/YY HH:mm:ss')}
+              </Alert>
+            </Snackbar>
+          ) : null}
         </Stack>
       </Box>
     </>
