@@ -14,7 +14,7 @@ import {
 } from 'firebase/firestore';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
-import { Props, CollectionData, Perfil } from '../vite-env';
+import { Props, CollectionData, Perfil, CollectionData2 } from '../vite-env';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -77,6 +77,7 @@ export const retorno = (el1: any, el2: any): {} => {
     descripcion: el1.descripcion,
     numCoche: el1.numCoche,
     uid: el1.uid,
+    createdAt: el1.createdAt,
     id: el2,
   };
   return objeto;
@@ -95,7 +96,7 @@ export async function Borrar(params: string) {
 export async function obtenerAsistenciaCoche() {
   const q = query(collection(db, 'Asistencias'), orderBy('fecha', 'desc'));
   const querySnapshot = await getDocs(q);
-  const data: CollectionData[] = [];
+  const data: CollectionData2[] = [];
   querySnapshot.forEach((doc) => {
     data.push(retorno(doc.data(), doc.id) as CollectionData);
   });

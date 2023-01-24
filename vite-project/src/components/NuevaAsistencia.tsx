@@ -26,7 +26,9 @@ const NuevaAsistencia = () => {
     descripcion: '',
     numCoche: '',
     uid: '' || context?.user.uid,
+    createdAt: Date.now(),
   });
+  console.log(asistencia.createdAt);
   if (!context?.user.nombre) navigate('/');
 
   const InputStyle = {
@@ -53,7 +55,11 @@ const NuevaAsistencia = () => {
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
-    setAsistencia({ ...asistencia, [e.target.name]: e.target.value });
+    setAsistencia({
+      ...asistencia,
+      [e.target.name]: e.target.value,
+      createdAt: Date.now(),
+    });
   }
   const handleChangeFecha = (newValue: Dayjs | null) => {
     setFech(newValue);
@@ -70,6 +76,7 @@ const NuevaAsistencia = () => {
       descripcion: '',
       numCoche: '',
       uid: '' || context?.user.uid,
+      createdAt: 0,
     });
   }
 

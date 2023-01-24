@@ -11,12 +11,12 @@ import { obtenerAsistenciaCoche, todosUsuarios } from '../config/Firebase';
 import dayjs from 'dayjs';
 import { useLocation } from 'wouter';
 import { AuthContext } from '../context/setAuth';
-import { CollectionData, Perfil } from '../vite-env';
+import { CollectionData2, Perfil } from '../vite-env';
 
 export default function BuscarCoche() {
-  const [coches, setCoches] = React.useState<CollectionData[]>([]);
+  const [coches, setCoches] = React.useState<CollectionData2[]>([]);
   const [location, navigate] = useLocation();
-  const [cocheBuscador, setCochebuscador] = React.useState<CollectionData[]>(
+  const [cocheBuscador, setCochebuscador] = React.useState<CollectionData2[]>(
     []
   );
   const [empleado, setEmpleado] = React.useState<Perfil[]>([]);
@@ -64,6 +64,7 @@ export default function BuscarCoche() {
             <TableCell>Coche</TableCell>
             <TableCell align="center">Descripción</TableCell>
             <TableCell align="right">Fecha</TableCell>
+            <TableCell align="center">Creado el</TableCell>
             <TableCell align="right">Nombre y apellido</TableCell>
           </TableRow>
         </TableHead>
@@ -80,6 +81,9 @@ export default function BuscarCoche() {
                   <TableCell align="left">{row.descripcion}</TableCell>
                   <TableCell align="right">
                     {dayjs(row.fecha).format('DD/MM/YY')}
+                  </TableCell>
+                  <TableCell align="center">
+                    {dayjs(row.createdAt).format('DD/MM HH:mm')}
                   </TableCell>
                   <TableCell align="right">
                     {empleado ? empleadoNombre(row.uid) : 'Sin nombre'}

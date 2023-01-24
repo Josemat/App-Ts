@@ -26,8 +26,8 @@ const Home = () => {
       const data: Array<string> = [];
       response.forEach((el) => data.push(el.uid as string));
       setEmpleados(data);
-      // const datos = await obtenerAsistenciaCoche();
-      // setAsistencias(datos);
+      // const datos = await obtenerAsistenciaCoche(); // Desact esto
+      // setAsistencias(datos); //
     };
     llamadaFirebase();
     const q = query(collection(db, 'Asistencias'), orderBy('fecha', 'desc'));

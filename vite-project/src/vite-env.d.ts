@@ -8,17 +8,19 @@ export interface Props {
   uid?: string;
   borrar?: boolean;
   id: string;
+  createdAt?: string;
 }
 export interface Pipo {
   []: Props;
 }
-export type CollectionDat = {
+export type CollectionData2 = {
   fecha: string;
   empresa: string;
   descripcion: string;
   numCoche: string;
   uid: string;
   id: string;
+  createdAt?: number;
 };
 type CollectionData = {
   fecha: string;
