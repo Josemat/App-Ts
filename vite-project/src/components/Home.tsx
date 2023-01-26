@@ -111,7 +111,7 @@ const Home = () => {
         <Box sx={{}}>
           <Stack
             direction="row"
-            justifyContent="flex-start"
+            justifyContent="center"
             alignItems="flex-start"
             spacing={2}
           >
