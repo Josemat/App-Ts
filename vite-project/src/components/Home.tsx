@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import {
@@ -26,9 +27,10 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 const Home = () => {
   const [res, setRes] = React.useState<Perfil[]>([]);
   const [asistencias, setAsistencias] = React.useState<CollectionData2[]>([]);
+  // const [orden, setOrden] = React.useState<any>([{ empleado: '', orden: 0 }]);
   const [empleados, setEmpleados] = React.useState<string[]>([]);
   const [open, setOpen] = React.useState(true);
-  const [openAlert, setOpenAlert] = React.useState(false);
+  const [openAlert, setOpenAlert] = React.useState(true);
   const [infoAlerta, setInfoAlerta] = React.useState({
     apellido: '',
     numCoche: '',
@@ -47,7 +49,18 @@ const Home = () => {
     setOpenAlert(false);
   };
 
-  // console.log(asistencias);
+  //------------------Posiciones
+  // const asistLenght = empleados
+  //   .map((emp) => {
+  //     return asistencias.filter((el) => el.uid === emp);
+  //   })
+  //   .sort((a, b) => a.length - b.length);
+  // const datosOrdenados = asistLenght.sort((a, b) => a.length - b.length);
+  // datosOrdenados.forEach((arr, index) => arr);
+  // console.log(empleados.filter((emp) => arr.filter((as) => as.uid === emp)));
+  // const llaves = Object.keys(datosOrdenados);
+  // console.log(asistLenght);
+  // console.log(empleados);
   React.useEffect(() => {
     const llamadaFirebase = async () => {
       const response = await todosUsuarios();
@@ -59,7 +72,10 @@ const Home = () => {
       // setAsistencias(datos); //
     };
     llamadaFirebase();
-    const q = query(collection(db, 'Asistencias'), orderBy('fecha', 'desc'));
+    const q = query(
+      collection(db, 'Asistencias'),
+      orderBy('createdAt', 'desc')
+    );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const dato: CollectionData[] = [];
       querySnapshot.forEach((doc) => {
@@ -89,54 +105,58 @@ const Home = () => {
   const menor = Math.min(...arraysEmpleados.map((arr) => arr.length));
   const mayor = Math.max(...arraysEmpleados.map((arr) => arr.length));
 
-  console.log(infoAlerta);
   return (
     <>
-      <Box sx={{ flexGrow: 1, m: 1 }}>
-        <Stack
-          direction="column-reverse"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-          spacing={2}
-        >
-          {asistencias.length ? (
-            empleados.map((emp) => (
-              <Empleado
-                key={emp}
-                empleado={res.filter((el) => el.uid === emp)}
-                array={asistencias.filter((el) => el.uid === emp)}
-                mayor={mayor}
-                menor={menor}
-              />
-            ))
-          ) : (
-            <Backdrop
-              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-              open={open}
-            >
-              <CircularProgress color="inherit" />
-            </Backdrop>
-          )}
-          {asistencias.length ? (
-            <Snackbar
-              open={openAlert}
-              autoHideDuration={15000}
-              onClose={handleClose}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            >
-              <Alert
-                onClose={handleClose}
-                severity="info"
-                sx={{ width: '100%' }}
+      <Container>
+        <Box sx={{}}>
+          <Stack
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            spacing={2}
+          >
+            {asistencias.length ? (
+              empleados.map((emp) => (
+                <Empleado
+                  key={emp}
+                  empleado={res.filter((el) => el.uid === emp)}
+                  array={asistencias.filter((el) => el.uid === emp)}
+                  mayor={mayor}
+                  menor={menor}
+                />
+              ))
+            ) : (
+              <Backdrop
+                sx={{
+                  color: '#fff',
+                  zIndex: (theme) => theme.zIndex.drawer + 1,
+                }}
+                open={open}
               >
-                Última asistencia creada por {infoAlerta.apellido},
-                {infoAlerta.numCoche} de {infoAlerta.empresa} el{' '}
-                {dayjs(infoAlerta.creada).format('DD/MM/YY HH:mm:ss')}
-              </Alert>
-            </Snackbar>
-          ) : null}
-        </Stack>
-      </Box>
+                <CircularProgress color="inherit" />
+              </Backdrop>
+            )}
+            {asistencias.length ? (
+              <Snackbar
+                open={openAlert}
+                autoHideDuration={15000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              >
+                <Alert
+                  onClose={handleClose}
+                  severity="info"
+                  sx={{ width: '100%' }}
+                >
+                  Última asistencia creada por {infoAlerta.apellido},{' '}
+                  {infoAlerta.numCoche} de {infoAlerta.empresa} el{' '}
+                  {dayjs(infoAlerta.creada).format('DD/MM/YY HH:mm:ss')}
+                </Alert>
+              </Snackbar>
+            ) : null}
+          </Stack>
+        </Box>
+      </Container>
     </>
   );
 };

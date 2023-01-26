@@ -53,7 +53,7 @@ export default function Login() {
             id="emailLogin"
             type="email"
             name="email"
-            label="Usuario"
+            label="Correo"
             value={user.email}
             onChange={handleChange}
           />

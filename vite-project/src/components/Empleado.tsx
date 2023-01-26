@@ -23,21 +23,21 @@ const Empleado: React.FC<PropsEmpleado> = ({
   const context = React.useContext(AuthContext);
   const user = empleado[0];
   const asist = array
-    .sort((a, b) => Number(a.fecha) - Number(b.fecha))
+    .sort((a, b) => Number(b.fecha) - Number(a.fecha))
     .reverse(); //Ordenando el array por fechas
   function nombre(nombre: string) {
-    if (nombre.length > 13) return `${nombre.slice(0, 13)}...`;
+    if (nombre.length > 13) return `${nombre.slice(0, 8)}...`;
     else return nombre;
   }
   const color = menor === array.length ? 'error' : 'success';
   return (
     <Stack
-      direction="row"
-      justifyContent="flex-start"
+      direction="column"
+      justifyContent="flex-end"
       alignItems="center"
-      spacing={1.5}
+      spacing={1}
     >
-      <div style={{ width: '150px' }}>
+      <div style={{ width: '150px', height: 200 }}>
         <Badge
           badgeContent={menor === array.length ? 'Siguiente' : '✔'}
           invisible={user.vacaciones === 'Si'}
@@ -51,12 +51,13 @@ const Empleado: React.FC<PropsEmpleado> = ({
               user.nombre
             }
             sx={{
-              width: 56,
-              height: 56,
+              width: 100,
+              height: 100,
+              mb: 0,
             }}
           />
         </Badge>
-        <h3>{nombre(`${user.nombre}`)}</h3>
+        <h2>{nombre(`${user.nombre}`)}</h2>
         <h3>{nombre(`${user.apellido}`)}</h3>
       </div>
       {user.vacaciones !== 'Si' ? (
@@ -71,7 +72,7 @@ const Empleado: React.FC<PropsEmpleado> = ({
                 key={element.id}
                 id={element.id}
                 empresa={element.empresa.slice(0, 9)}
-                fecha={dayjs(element.fecha).format('DD-MM-YYYY')}
+                fecha={dayjs(element.fecha).format('DD/MM/YYYY')}
                 descripcion={element.descripcion.slice(0, 25)} //Limitando 25 caracteres
                 numCoche={element.numCoche}
                 borrar={context?.user.uid === user.uid}

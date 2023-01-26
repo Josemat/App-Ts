@@ -28,7 +28,7 @@ const NuevaAsistencia = () => {
     uid: '' || context?.user.uid,
     createdAt: Date.now(),
   });
-  console.log(asistencia.createdAt);
+
   if (!context?.user.nombre) navigate('/');
 
   const InputStyle = {
