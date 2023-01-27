@@ -22,9 +22,8 @@ const Empleado: React.FC<PropsEmpleado> = ({
 }) => {
   const context = React.useContext(AuthContext);
   const user = empleado[0];
-  const asist = array
-    .sort((a, b) => Number(b.fecha) - Number(a.fecha))
-    .reverse(); //Ordenando el array por fechas
+  const asist = array.sort((a, b) => Number(b.fecha) - Number(a.fecha));
+  //.reverse() //Ordenando el array por fechas se puede invertrir el orden
   function nombre(nombre: string) {
     if (nombre.length > 13) return `${nombre.slice(0, 8)}...`;
     else return nombre;
