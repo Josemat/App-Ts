@@ -57,7 +57,7 @@ const Empleado: React.FC<PropsEmpleado> = ({
               ? 'Siguiente'
               : '✔'
           }
-          invisible={user.vacaciones === 'i'}
+          invisible={user.vacaciones === 'Si'}
           color={color}
         >
           <Avatar
@@ -80,7 +80,7 @@ const Empleado: React.FC<PropsEmpleado> = ({
           <small> ({array.length})</small>
         </h3>
       </div>
-      {user.vacaciones !== 'S' ? (
+      {user.vacaciones !== 'Si' ? (
         asist
           .slice(0, 6 - diferencia(array.length) || 6)
           .reverse()
