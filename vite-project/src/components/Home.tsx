@@ -23,12 +23,15 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 ) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-
+type EmpOrden = {
+  empl: string | undefined;
+  posi: number;
+};
 const Home = () => {
   const [res, setRes] = React.useState<Perfil[]>([]);
   const [asistencias, setAsistencias] = React.useState<CollectionData2[]>([]);
-  // const [orden, setOrden] = React.useState<any>([{ empleado: '', orden: 0 }]);
   const [empleados, setEmpleados] = React.useState<string[]>([]);
+  const [empleadoPos, setEmpleadoPos] = React.useState<EmpOrden[]>([]);
   const [open, setOpen] = React.useState(true);
   const [openAlert, setOpenAlert] = React.useState(true);
   const [infoAlerta, setInfoAlerta] = React.useState({
@@ -49,18 +52,6 @@ const Home = () => {
     setOpenAlert(false);
   };
 
-  //------------------Posiciones
-  // const asistLenght = empleados
-  //   .map((emp) => {
-  //     return asistencias.filter((el) => el.uid === emp);
-  //   })
-  //   .sort((a, b) => a.length - b.length);
-  // const datosOrdenados = asistLenght.sort((a, b) => a.length - b.length);
-  // datosOrdenados.forEach((arr, index) => arr);
-  // console.log(empleados.filter((emp) => arr.filter((as) => as.uid === emp)));
-  // const llaves = Object.keys(datosOrdenados);
-  // console.log(asistLenght);
-  // console.log(empleados);
   React.useEffect(() => {
     const llamadaFirebase = async () => {
       const response = await todosUsuarios();
@@ -87,6 +78,23 @@ const Home = () => {
       unsubscribe();
     };
   }, []);
+  function ordenn() {
+    if (empleados.length) {
+      const asistLenght = empleados
+        .map((emp) => {
+          return asistencias.filter((el) => el.uid === emp);
+        })
+        .sort((a, b) => a.length - b.length);
+      const datosOrdenados = asistLenght.sort((a, b) => a.length - b.length);
+      for (let pos = 0; datosOrdenados.length > pos; pos++) {
+        const empleado = datosOrdenados[pos].find((arr) => arr.uid);
+        setEmpleadoPos((prevState) => [
+          ...prevState,
+          { empl: empleado?.uid, posi: pos + 1 },
+        ]);
+      }
+    }
+  }
   React.useEffect(() => {
     if (asistencias.length) {
       const infoEmpleado = res.filter((el) => el.uid === asistencias[0].uid);
@@ -97,6 +105,8 @@ const Home = () => {
         creada: asistencias[0].createdAt || 0,
       });
       setOpenAlert(true);
+      setEmpleadoPos([]);
+      ordenn();
     }
   }, [asistencias]);
   const arraysEmpleados = empleados.map((emp) =>
@@ -104,7 +114,14 @@ const Home = () => {
   );
   const menor = Math.min(...arraysEmpleados.map((arr) => arr.length));
   const mayor = Math.max(...arraysEmpleados.map((arr) => arr.length));
-
+  function filtrado(empUID: string) {
+    const user = empleadoPos.filter((el) => el.empl === empUID);
+    if (user.length) {
+      const { empl, posi } = user[0];
+      return posi;
+    }
+    return 1;
+  }
   return (
     <>
       <Container>
@@ -121,7 +138,7 @@ const Home = () => {
                   key={emp}
                   empleado={res.filter((el) => el.uid === emp)}
                   array={asistencias.filter((el) => el.uid === emp)}
-                  mayor={mayor}
+                  orden={mayor}
                   menor={menor}
                 />
               ))

@@ -71,8 +71,8 @@ const NuevaAsistencia = () => {
 
     context?.setAlerta('success', 'Se guardó exitosamente!');
     setAsistencia({
-      fecha: fecha,
-      empresa: '',
+      fecha: fech?.format('YYYYMMDD'),
+      empresa: 'Otra',
       descripcion: '',
       numCoche: '',
       uid: '' || context?.user.uid,

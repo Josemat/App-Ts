@@ -9,7 +9,7 @@ import { AuthContext } from '../context/setAuth';
 
 interface PropsEmpleado {
   empleado: Array<Perfil>;
-  mayor: number;
+  orden: number;
   menor: number;
   array: Array<CollectionData>;
 }
@@ -17,7 +17,7 @@ interface PropsEmpleado {
 const Empleado: React.FC<PropsEmpleado> = ({
   empleado,
   array,
-  mayor,
+  orden,
   menor,
 }) => {
   const context = React.useContext(AuthContext);
@@ -28,7 +28,17 @@ const Empleado: React.FC<PropsEmpleado> = ({
     if (nombre.length > 13) return `${nombre.slice(0, 8)}...`;
     else return nombre;
   }
-  const color = menor === array.length ? 'error' : 'success';
+  const color =
+    user.vacaciones === 'Si'
+      ? menor === array.length
+        ? 'error'
+        : 'success'
+      : menor + 1 === array.length
+      ? 'error'
+      : 'success';
+  function diferencia(num: number) {
+    return orden - num;
+  }
   return (
     <Stack
       direction="column"
@@ -38,8 +48,16 @@ const Empleado: React.FC<PropsEmpleado> = ({
     >
       <div style={{ width: '150px', height: 200 }}>
         <Badge
-          badgeContent={menor === array.length ? 'Siguiente' : '✔'}
-          invisible={user.vacaciones === 'Si'}
+          badgeContent={
+            user.vacaciones === 'Si'
+              ? menor === array.length
+                ? 'Siguiente'
+                : '✔'
+              : menor + 1 === array.length
+              ? 'Siguiente'
+              : '✔'
+          }
+          invisible={user.vacaciones === 'i'}
           color={color}
         >
           <Avatar
@@ -57,11 +75,14 @@ const Empleado: React.FC<PropsEmpleado> = ({
           />
         </Badge>
         <h2>{nombre(`${user.nombre}`)}</h2>
-        <h3>{nombre(`${user.apellido}`)}</h3>
+        <h3>
+          {nombre(`${user.apellido}`)}
+          <small> ({array.length})</small>
+        </h3>
       </div>
-      {user.vacaciones !== 'Si' ? (
+      {user.vacaciones !== 'S' ? (
         asist
-          .slice(0, 6)
+          .slice(0, 6 - diferencia(array.length) || 6)
           .reverse()
           .map(
             (
@@ -84,8 +105,8 @@ const Empleado: React.FC<PropsEmpleado> = ({
           id={'vacacionesPagas(?'}
           empresa={'licencia'}
           fecha={'vacaciones'}
-          descripcion={'No disponible'} //Limitando 30 caracteres
-          numCoche={'🌴'}
+          descripcion={'No disponible'}
+          numCoche={'🌴🌴🌴🌴'}
           borrar={false}
         />
       )}
