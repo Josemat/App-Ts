@@ -114,13 +114,17 @@ const Home = () => {
   );
   const menor = Math.min(...arraysEmpleados.map((arr) => arr.length));
   const mayor = Math.max(...arraysEmpleados.map((arr) => arr.length));
-  function filtrado(empUID: string) {
-    const user = empleadoPos.filter((el) => el.empl === empUID);
-    if (user.length) {
-      const { empl, posi } = user[0];
-      return posi;
-    }
-    return 1;
+  // const prueba = Math.min(...arraysEmpleados.map((arr) => filtrado(arr)));
+  function filtrado() {
+    //Se utiliza para definir el menor que NO esté de vacaciones
+    const vacacionesNO = res.map((emp) => {
+      if (emp.vacaciones !== 'Si') {
+        const dsa = asistencias.filter((el) => el.uid === emp.uid);
+        return dsa.length;
+      }
+      return 99999; //Numero random grande para que no entre en el mínimo
+    });
+    return Math.min(...vacacionesNO);
   }
   return (
     <>
@@ -139,7 +143,7 @@ const Home = () => {
                   empleado={res.filter((el) => el.uid === emp)}
                   array={asistencias.filter((el) => el.uid === emp)}
                   orden={mayor}
-                  menor={menor}
+                  menor={filtrado()}
                 />
               ))
             ) : (

@@ -92,6 +92,7 @@ const Perfil = () => {
 
   return (
     <>
+      <h2>Modificación del perfil</h2>
       <Box
         component="form"
         sx={{

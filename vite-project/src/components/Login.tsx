@@ -74,10 +74,14 @@ export default function Login() {
             Login
           </Button>
         </div>
-        <small>Si no tienes cuenta</small>
-        <Link href="/register">
+        <small>
+          Si no tienes cuenta contacta con el Administrador para generar tu
+          usuario.
+        </small>
+        {/* <small>Si no tienes cuenta</small> */}
+        {/* <Link href="/register">
           <Button variant="text">Registrate aquí</Button>
-        </Link>
+        </Link> */}
         <br />
         <small>¿Olvidaste la contraseña?</small>
         <Link href="/olvido">

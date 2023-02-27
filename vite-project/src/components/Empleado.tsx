@@ -28,14 +28,7 @@ const Empleado: React.FC<PropsEmpleado> = ({
     if (nombre.length > 13) return `${nombre.slice(0, 8)}...`;
     else return nombre;
   }
-  const color =
-    user.vacaciones === 'Si'
-      ? menor === array.length
-        ? 'error'
-        : 'success'
-      : menor + 1 === array.length
-      ? 'error'
-      : 'success';
+  const color = menor === array.length ? 'error' : 'success';
   function diferencia(num: number) {
     return orden - num;
   }
@@ -48,25 +41,13 @@ const Empleado: React.FC<PropsEmpleado> = ({
     >
       <div style={{ width: '150px', height: 200 }}>
         <Badge
-          badgeContent={
-            user.vacaciones === 'Si'
-              ? menor === array.length
-                ? 'Siguiente'
-                : '✔'
-              : menor + 1 === array.length
-              ? 'Siguiente'
-              : '✔'
-          }
+          badgeContent={menor === array.length ? 'Siguiente' : '✔'}
           invisible={user.vacaciones === 'Si'}
           color={color}
         >
           <Avatar
             alt={user.nombre}
-            src={
-              user.avatar ||
-              'http://ambiel.adv.br/wp-content/uploads/2021/07/avatar-user-1.jpg' ||
-              user.nombre
-            }
+            src={user.avatar || user.nombre}
             sx={{
               width: 100,
               height: 100,

@@ -47,68 +47,71 @@ export default function BuscarCoche() {
     setCochebuscador(resultado);
   }
   return (
-    <TableContainer component={Paper}>
-      <TextField
-        id="filled-basic"
-        label="Buscar coche"
-        variant="standard"
-        value={busca || ''}
-        onChange={(e) => {
-          setBusca(e.target.value);
-          buscando(e.target.value);
-        }}
-      />
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Coche</TableCell>
-            <TableCell align="center">Descripción</TableCell>
-            <TableCell align="right">Fecha</TableCell>
-            <TableCell align="center">Creado el</TableCell>
-            <TableCell align="right">Nombre y apellido</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {!busca
-            ? coches.map((row) => (
-                <TableRow
-                  key={Math.random()}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.numCoche}
-                  </TableCell>
-                  <TableCell align="left">{row.descripcion}</TableCell>
-                  <TableCell align="right">
-                    {dayjs(row.fecha).format('DD/MM/YY')}
-                  </TableCell>
-                  <TableCell align="center">
-                    {dayjs(row.createdAt).format('DD/MM HH:mm')}
-                  </TableCell>
-                  <TableCell align="right">
-                    {empleado ? empleadoNombre(row.uid) : 'Sin nombre'}
-                  </TableCell>
-                </TableRow>
-              ))
-            : cocheBuscador.map((row) => (
-                <TableRow
-                  key={row.descripcion}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.numCoche}
-                  </TableCell>
-                  <TableCell align="right">{row.descripcion}</TableCell>
-                  <TableCell align="right">
-                    {dayjs(row.fecha).format('DD/MM/YY')}
-                  </TableCell>
-                  <TableCell align="right">
-                    {empleado ? empleadoNombre(row.uid) : 'Sin nombre'}
-                  </TableCell>
-                </TableRow>
-              ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      <h2>Búsqueda e historial de asistencias</h2>
+      <TableContainer component={Paper}>
+        <TextField
+          id="filled-basic"
+          label="Buscar coche"
+          variant="standard"
+          value={busca || ''}
+          onChange={(e) => {
+            setBusca(e.target.value);
+            buscando(e.target.value);
+          }}
+        />
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Coche</TableCell>
+              <TableCell align="center">Descripción</TableCell>
+              <TableCell align="right">Fecha</TableCell>
+              <TableCell align="center">Creado el</TableCell>
+              <TableCell align="right">Nombre y apellido</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {!busca
+              ? coches.map((row) => (
+                  <TableRow
+                    key={Math.random()}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.numCoche}
+                    </TableCell>
+                    <TableCell align="left">{row.descripcion}</TableCell>
+                    <TableCell align="right">
+                      {dayjs(row.fecha).format('DD/MM/YY')}
+                    </TableCell>
+                    <TableCell align="center">
+                      {dayjs(row.createdAt).format('DD/MM HH:mm')}
+                    </TableCell>
+                    <TableCell align="right">
+                      {empleado ? empleadoNombre(row.uid) : 'Sin nombre'}
+                    </TableCell>
+                  </TableRow>
+                ))
+              : cocheBuscador.map((row) => (
+                  <TableRow
+                    key={row.descripcion}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.numCoche}
+                    </TableCell>
+                    <TableCell align="right">{row.descripcion}</TableCell>
+                    <TableCell align="right">
+                      {dayjs(row.fecha).format('DD/MM/YY')}
+                    </TableCell>
+                    <TableCell align="right">
+                      {empleado ? empleadoNombre(row.uid) : 'Sin nombre'}
+                    </TableCell>
+                  </TableRow>
+                ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }
