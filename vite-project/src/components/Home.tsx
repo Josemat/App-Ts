@@ -113,6 +113,7 @@ const Home = () => {
     asistencias.filter((el) => el.uid === emp)
   );
   const menor = Math.min(...arraysEmpleados.map((arr) => arr.length));
+
   const mayor = Math.max(...arraysEmpleados.map((arr) => arr.length));
   // const prueba = Math.min(...arraysEmpleados.map((arr) => filtrado(arr)));
   function filtrado() {
