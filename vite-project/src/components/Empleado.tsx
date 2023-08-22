@@ -43,8 +43,8 @@ const Empleado: React.FC<PropsEmpleado> = ({
         <Badge
           badgeContent={
             menor === array.length
-              ? dayjs(asist[0].fecha).format('DD / MMM')
-              : '✔'
+              ? dayjs(asist[0].fecha).format('DD / MMM ')
+              : `${dayjs(asist[0].fecha).format('DD / MMM')} ✔`
           }
           invisible={user.vacaciones === 'Si'}
           color={color}
