@@ -32,10 +32,10 @@ const Empleado: React.FC<PropsEmpleado> = ({
   function diferencia(num: number) {
     const difer = Math.abs(orden - num);
 
-    console.log(
-      empleado[0].nombre,
-      difer > 5 ? 1 : `difer: ${difer ? 7 - difer : difer}`
-    );
+    // console.log(
+    //   empleado[0].nombre,
+    //   difer > 5 ? 1 : `difer: ${difer ? 7 - difer : difer}`
+    // );
     return difer >= 6 ? 1 : difer ? 7 - difer : difer;
 
     // return orden - num;
