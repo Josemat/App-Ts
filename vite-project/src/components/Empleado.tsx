@@ -30,7 +30,15 @@ const Empleado: React.FC<PropsEmpleado> = ({
   }
   const color = menor === array.length ? 'error' : 'success';
   function diferencia(num: number) {
-    return orden - num;
+    const difer = Math.abs(orden - num);
+
+    console.log(
+      empleado[0].nombre,
+      difer > 5 ? 1 : `difer: ${difer ? 7 - difer : difer}`
+    );
+    return difer >= 6 ? 1 : difer ? 7 - difer : difer;
+
+    // return orden - num;
   }
   return (
     <Stack
@@ -67,7 +75,7 @@ const Empleado: React.FC<PropsEmpleado> = ({
       </div>
       {user.vacaciones !== 'Si' ? (
         asist
-          .slice(0, 6 - diferencia(array.length) || 6)
+          .slice(0, diferencia(array.length) || 7)
           .reverse()
           .map(
             (
