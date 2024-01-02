@@ -155,6 +155,11 @@ const Perfil = () => {
             <InputLabel id="demo-simple-select-label">
               Vacaciones o licencia
             </InputLabel>
+
+            <small style={{ marginTop: '20px', marginBottom: '10px' }}>
+              Recuerda sacar screen de tu POSICIÓN RESPECTO AL ÚLTIMO en la
+              lista.
+            </small>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
