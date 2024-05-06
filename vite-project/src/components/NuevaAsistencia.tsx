@@ -118,6 +118,7 @@ const NuevaAsistencia = () => {
                 onChange={handleChange}
               >
                 <FormControlLabel
+                  disabled
                   value="ERSA"
                   control={<Radio />}
                   label="ERSA"
