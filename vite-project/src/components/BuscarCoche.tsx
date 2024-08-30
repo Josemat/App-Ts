@@ -43,7 +43,10 @@ export default function BuscarCoche() {
     }
   }
   function buscando(numero: string) {
-    const resultado = coches.filter((col) => col.numCoche === numero);
+    const resultado = coches
+      .filter((a) => a.numCoche.includes(numero))
+      .toSorted((a, b) => Number(a.numCoche) - Number(b.numCoche));
+    console.log(resultado);
     setCochebuscador(resultado);
   }
   return (
@@ -52,6 +55,7 @@ export default function BuscarCoche() {
       <TableContainer component={Paper}>
         <TextField
           id="filled-basic"
+          type="number"
           label="Buscar coche"
           variant="standard"
           value={busca || ''}
@@ -66,7 +70,7 @@ export default function BuscarCoche() {
               <TableCell>Coche</TableCell>
               <TableCell align="center">Descripción</TableCell>
               <TableCell align="right">Fecha</TableCell>
-              <TableCell align="center">Creado el</TableCell>
+              {/* <TableCell align="center">Creado el</TableCell> */}
               <TableCell align="right">Nombre y apellido</TableCell>
             </TableRow>
           </TableHead>
@@ -94,7 +98,7 @@ export default function BuscarCoche() {
                 ))
               : cocheBuscador.map((row) => (
                   <TableRow
-                    key={row.descripcion}
+                    key={Math.random()}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
