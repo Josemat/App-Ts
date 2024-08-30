@@ -47,7 +47,7 @@ const Empleado: React.FC<PropsEmpleado> = ({
       alignItems="center"
       spacing={1}
     >
-      <div style={{ width: '150px', height: 225 }}>
+      <div style={{ width: '150px', height: 250 }}>
         <Badge
           badgeContent={
             menor === array.length
@@ -67,11 +67,13 @@ const Empleado: React.FC<PropsEmpleado> = ({
             }}
           />
         </Badge>
-        <h2>{nombre(`${user.nombre}`)}</h2>
-        <h3 style={{ marginBottom: '10px' }}>
-          <small>{`Asistencias ${dayjs().year()} `}</small>
-          <small>
-            (
+        <h2 style={{ marginTop: '10px', marginBottom: '3px' }}>
+          {nombre(`${user.nombre}`)}
+        </h2>
+        <h3 style={{ margin: '10px' }}>
+          Asistencias
+          <h4 style={{ margin: '10px' }}>
+            {`${dayjs().year()} `}(
             {
               array.filter(
                 (a) =>
@@ -80,7 +82,8 @@ const Empleado: React.FC<PropsEmpleado> = ({
               ).length
             }
             )
-          </small>
+          </h4>
+          <h4 style={{ margin: '10px' }}>Total:{array.length} </h4>
         </h3>
       </div>
       {user.vacaciones !== 'Si' ? (
