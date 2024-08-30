@@ -43,9 +43,9 @@ export default function BuscarCoche() {
     }
   }
   function buscando(numero: string) {
-    const resultado = coches
+    const resultado: CollectionData2[] = coches
       .filter((a) => a.numCoche.includes(numero))
-      .toSorted((a, b) => Number(a.numCoche) - Number(b.numCoche));
+      .sort((a, b) => Number(a.numCoche) - Number(b.numCoche));
     console.log(resultado);
     setCochebuscador(resultado);
   }
