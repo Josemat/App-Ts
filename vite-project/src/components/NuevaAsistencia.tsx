@@ -111,18 +111,11 @@ const NuevaAsistencia = () => {
               <RadioGroup
                 sx={{ mt: 2, mb: 2 }}
                 aria-labelledby="empresa"
-                row
                 name="empresa"
                 value={asistencia.empresa}
                 defaultValue={'Otra'}
                 onChange={handleChange}
               >
-                <FormControlLabel
-                  disabled
-                  value="ERSA"
-                  control={<Radio />}
-                  label="ERSA"
-                />
                 <FormControlLabel
                   value="TAMSE"
                   control={<Radio />}

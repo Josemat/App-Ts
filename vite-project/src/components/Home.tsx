@@ -16,6 +16,7 @@ import dayjs from 'dayjs';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { CollectionData, CollectionData2, Perfil } from '../vite-env';
 import { query, collection, orderBy, onSnapshot } from 'firebase/firestore';
+import { Grid } from '@mui/material';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -130,54 +131,102 @@ const Home = () => {
   return (
     <>
       <Container>
-        <Box sx={{}}>
-          <Stack
-            direction="row"
-            justifyContent="center"
-            alignItems="flex-start"
-            spacing={2}
-          >
-            {asistencias.length ? (
-              empleados.map((emp) => (
-                <Empleado
-                  key={emp}
-                  empleado={res.filter((el) => el.uid === emp)}
-                  array={asistencias.filter((el) => el.uid === emp)}
-                  orden={mayor}
-                  menor={filtrado()}
-                />
-              ))
-            ) : (
-              <Backdrop
-                sx={{
-                  color: '#fff',
-                  zIndex: (theme) => theme.zIndex.drawer + 1,
-                }}
-                open={open}
-              >
-                <CircularProgress color="inherit" />
-              </Backdrop>
-            )}
-            {asistencias.length ? (
-              <Snackbar
-                open={openAlert}
-                autoHideDuration={15000}
-                onClose={handleClose}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-              >
-                <Alert
-                  onClose={handleClose}
-                  severity="info"
-                  sx={{ width: '100%' }}
+        {/* <Box sx={{ backgroundColor: 'grey' }}> */}
+        {window.screen.width > 800 ? (
+          <>
+            <Stack
+              direction={{ sm: 'row', xs: 'column' }}
+              justifyContent="center"
+              alignItems="flex-start"
+              spacing={2}
+            >
+              {asistencias.length ? (
+                empleados.map((emp) => (
+                  <Empleado
+                    key={emp}
+                    empleado={res.filter((el) => el.uid === emp)}
+                    array={asistencias.filter((el) => el.uid === emp)}
+                    orden={mayor}
+                    menor={filtrado()}
+                  />
+                ))
+              ) : (
+                <Backdrop
+                  sx={{
+                    color: '#fff',
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open={open}
                 >
-                  Última asistencia creada por {infoAlerta.apellido},{' '}
-                  {infoAlerta.numCoche} de {infoAlerta.empresa} el{' '}
-                  {dayjs(infoAlerta.creada).format('DD/MM/YY HH:mm:ss')}
-                </Alert>
-              </Snackbar>
-            ) : null}
-          </Stack>
-        </Box>
+                  <CircularProgress color="inherit" />
+                </Backdrop>
+              )}
+              {asistencias.length ? (
+                <Snackbar
+                  open={openAlert}
+                  autoHideDuration={15000}
+                  onClose={handleClose}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                >
+                  <Alert
+                    onClose={handleClose}
+                    severity="info"
+                    sx={{ width: '100%' }}
+                  >
+                    Última asistencia creada por {infoAlerta.apellido},{' '}
+                    {infoAlerta.numCoche} de {infoAlerta.empresa} el{' '}
+                    {dayjs(infoAlerta.creada).format('DD/MM/YY HH:mm:ss')}
+                  </Alert>
+                </Snackbar>
+              ) : null}
+            </Stack>
+          </>
+        ) : (
+          <>
+            <Grid container sx={{ justifyContent: 'space-evenly' }}>
+              {asistencias.length ? (
+                empleados.map((emp) => (
+                  <Empleado
+                    key={emp}
+                    empleado={res.filter((el) => el.uid === emp)}
+                    array={asistencias.filter((el) => el.uid === emp)}
+                    orden={mayor}
+                    menor={filtrado()}
+                  />
+                ))
+              ) : (
+                <Backdrop
+                  sx={{
+                    color: '#fff',
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open={open}
+                >
+                  <CircularProgress color="inherit" />
+                </Backdrop>
+              )}
+              {asistencias.length ? (
+                <Snackbar
+                  open={openAlert}
+                  autoHideDuration={15000}
+                  onClose={handleClose}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                >
+                  <Alert
+                    onClose={handleClose}
+                    severity="info"
+                    sx={{ width: '100%' }}
+                  >
+                    Última asistencia creada por {infoAlerta.apellido},{' '}
+                    {infoAlerta.numCoche} de {infoAlerta.empresa} el{' '}
+                    {dayjs(infoAlerta.creada).format('DD/MM/YY HH:mm:ss')}
+                  </Alert>
+                </Snackbar>
+              ) : null}
+            </Grid>
+          </>
+        )}
+        {/* </Box> */}
       </Container>
     </>
   );

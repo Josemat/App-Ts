@@ -42,12 +42,18 @@ const Empleado: React.FC<PropsEmpleado> = ({
   }
   return (
     <Stack
-      direction="column"
+      direction={{ sm: 'column', xs: 'row' }}
       justifyContent="flex-end"
       alignItems="center"
-      spacing={1}
+      spacing={2}
+      sx={{ backgroundColor: '#c3c3c3', marginTop: 1, borderRadius: 5 }}
     >
-      <div style={{ width: '150px', height: 250 }}>
+      <div
+        style={{
+          width: 150,
+          height: 250,
+        }}
+      >
         <Badge
           badgeContent={
             menor === array.length
@@ -64,57 +70,68 @@ const Empleado: React.FC<PropsEmpleado> = ({
               width: 100,
               height: 100,
               mb: 0,
+              mt: 1,
             }}
           />
         </Badge>
         <h2 style={{ marginTop: '10px', marginBottom: '3px' }}>
           {nombre(`${user.nombre}`)}
         </h2>
-        <h3 style={{ margin: '10px' }}>
-          Asistencias
-          <h4 style={{ margin: '10px' }}>
-            {`${dayjs().year()} `}(
-            {
-              array.filter(
-                (a) =>
-                  Number(dayjs(a.fecha).format('YYYY')) ===
-                  Number(dayjs().year())
-              ).length
-            }
-            )
-          </h4>
-          <h4 style={{ margin: '10px' }}>Total:{array.length} </h4>
-        </h3>
+        {window.screen.width > 800 ? (
+          <h3 style={{ margin: '10px' }}>
+            Asistencias
+            <h4 style={{ margin: '10px' }}>
+              {`${dayjs().year()} `}(
+              {
+                array.filter(
+                  (a) =>
+                    Number(dayjs(a.fecha).format('YYYY')) ===
+                    Number(dayjs().year())
+                ).length
+              }
+              )
+            </h4>
+            <h4 style={{ margin: '10px' }}>Total:{array.length} </h4>
+          </h3>
+        ) : (
+          <>
+            <h4 style={{ margin: '10px' }}>Total:{array.length} </h4>
+          </>
+        )}
       </div>
-      {user.vacaciones !== 'Si' ? (
-        asist
-          .slice(0, diferencia(array.length) || 7)
-          .reverse()
-          .map(
-            (
-              element // reemplazando el 6 por (array.length - menor + 1)
-            ) => (
-              <BasicCard
-                key={element.id}
-                id={element.id}
-                empresa={element.empresa.slice(0, 9)}
-                fecha={dayjs(element.fecha).format('DD/MM/YYYY')}
-                descripcion={element.descripcion.slice(0, 25)} //Limitando 25 caracteres
-                numCoche={element.numCoche}
-                borrar={context?.user.uid === user.uid}
-              />
+      {window.screen.width > 600 ? (
+        user.vacaciones !== 'Si' ? (
+          asist
+            .slice(0, diferencia(array.length) || 7)
+            .reverse()
+            .map(
+              (
+                element // reemplazando el 6 por (array.length - menor + 1)
+              ) => (
+                <BasicCard
+                  key={element.id}
+                  id={element.id}
+                  empresa={element.empresa.slice(0, 9)}
+                  fecha={dayjs(element.fecha).format('DD/MM/YYYY')}
+                  descripcion={element.descripcion.slice(0, 25)} //Limitando 25 caracteres
+                  numCoche={element.numCoche}
+                  borrar={context?.user.uid === user.uid}
+                />
+              )
             )
-          )
+        ) : (
+          <BasicCard
+            key={Math.random()}
+            id={'vacacionesPagas(?'}
+            empresa={'licencia'}
+            fecha={'vacaciones'}
+            descripcion={'No disponible'}
+            numCoche={'🌴🌴🌴🌴'}
+            borrar={false}
+          />
+        )
       ) : (
-        <BasicCard
-          key={Math.random()}
-          id={'vacacionesPagas(?'}
-          empresa={'licencia'}
-          fecha={'vacaciones'}
-          descripcion={'No disponible'}
-          numCoche={'🌴🌴🌴🌴'}
-          borrar={false}
-        />
+        ''
       )}
     </Stack>
   );
