@@ -46,7 +46,7 @@ const Empleado: React.FC<PropsEmpleado> = ({
       justifyContent="flex-end"
       alignItems="center"
       spacing={2}
-      sx={{ backgroundColor: '#c3c3c3', marginTop: 1, borderRadius: 5 }}
+      sx={{ backgroundColor: '#c3c3c3', marginTop: 2, borderRadius: 5 }}
     >
       <div
         style={{

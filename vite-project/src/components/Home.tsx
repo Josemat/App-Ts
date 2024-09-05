@@ -208,15 +208,11 @@ const Home = () => {
               {asistencias.length ? (
                 <Snackbar
                   open={openAlert}
-                  autoHideDuration={15000}
+                  autoHideDuration={5000}
                   onClose={handleClose}
-                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                  anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 >
-                  <Alert
-                    onClose={handleClose}
-                    severity="info"
-                    sx={{ width: '100%' }}
-                  >
+                  <Alert onClose={handleClose} severity="info">
                     Última asistencia creada por {infoAlerta.apellido},{' '}
                     {infoAlerta.numCoche} de {infoAlerta.empresa} el{' '}
                     {dayjs(infoAlerta.creada).format('DD/MM/YY HH:mm:ss')}
