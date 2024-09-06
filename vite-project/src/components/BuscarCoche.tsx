@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import { useLocation } from 'wouter';
 import { AuthContext } from '../context/setAuth';
 import { CollectionData2, Perfil } from '../vite-env';
+import { Container } from '@mui/material';
 
 export default function BuscarCoche() {
   const [coches, setCoches] = React.useState<CollectionData2[]>([]);
@@ -51,6 +52,10 @@ export default function BuscarCoche() {
   }
   return (
     <>
+      {/* <Container sx={{ backgroundColor: 'green', height: '50vh' }}>
+        {' '}
+        probando la wea cosmica
+      </Container> */}
       <h2>Búsqueda e historial de asistencias</h2>
       <TableContainer component={Paper}>
         <TextField
@@ -69,8 +74,9 @@ export default function BuscarCoche() {
             <TableRow>
               <TableCell>Coche</TableCell>
               <TableCell align="center">Descripción</TableCell>
+              <TableCell align="center">Empresa</TableCell>
               <TableCell align="right">Fecha</TableCell>
-              {/* <TableCell align="center">Creado el</TableCell> */}
+              <TableCell align="center">Creado el</TableCell>
               <TableCell align="right">Nombre y apellido</TableCell>
             </TableRow>
           </TableHead>
@@ -85,6 +91,7 @@ export default function BuscarCoche() {
                       {row.numCoche}
                     </TableCell>
                     <TableCell align="left">{row.descripcion}</TableCell>
+                    <TableCell align="left">{row.empresa}</TableCell>
                     <TableCell align="right">
                       {dayjs(row.fecha).format('DD/MM/YY')}
                     </TableCell>
