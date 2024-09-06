@@ -40,18 +40,26 @@ const Empleado: React.FC<PropsEmpleado> = ({
 
     // return orden - num;
   }
+  let ventana = window.innerWidth > 800 ? 0 : 2;
+  let badgeHeight = window.innerWidth > 800 ? 250 : 200;
   return (
     <Stack
       direction={{ sm: 'column', xs: 'row' }}
       justifyContent="flex-end"
       alignItems="center"
       spacing={2}
-      sx={{ backgroundColor: '#c3c3c3', marginTop: 2, borderRadius: 5 }}
+      sx={{
+        backgroundColor: '#c3c3c3',
+        marginTop: ventana,
+        borderRadius: 5,
+        padding: 1,
+      }}
     >
       <div
         style={{
           width: 150,
-          height: 250,
+          height: badgeHeight,
+          marginTop: 5,
         }}
       >
         <Badge
