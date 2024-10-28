@@ -158,7 +158,8 @@ const Perfil = () => {
 
             <small style={{ marginTop: '20px', marginBottom: '10px' }}>
               Recuerda sacar screen de tu POSICIÓN RESPECTO AL ÚLTIMO en la
-              lista.
+              lista. Caso contrario tu posicion será igual al último de la
+              misma.
             </small>
             <Select
               labelId="demo-simple-select-label"
