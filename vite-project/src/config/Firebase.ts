@@ -45,7 +45,8 @@ export async function todosUsuarios() {
   const querySnapshot = await getDocs(q);
   const perfil: Perfil[] = [];
   querySnapshot.forEach((doc) => perfil.push(doc.data() as Perfil));
-  return perfil;
+
+  return perfil.filter((el) => el.uid !== '7wMLEtiwdGfJjxxeNbuzQkcqnJ13');
 }
 export async function actualizarDatosUsuario(uid: string | void, user: object) {
   const q = query(collection(db, 'personal'), where('uid', '==', uid));

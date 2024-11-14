@@ -32,8 +32,10 @@ type PieTy = { name: string; value: number };
 
 export default function BuscarCoche() {
   let fecha = new Intl.DateTimeFormat('en-US').format(Date.now());
+  const [nCoche, setNcoche] = React.useState<number | undefined>();
   const [protoPaginacion, setProtoPaginacion] = React.useState<number>(25);
   const [disabled, setDisabled] = React.useState(true);
+  const [cargando, setCargando] = React.useState<boolean>(true);
   const [coches, setCoches] = React.useState<CollectionData2[]>([]);
   const [location, navigate] = useLocation();
   const [cocheBuscador, setCochebuscador] = React.useState<CollectionData2[]>(
@@ -228,8 +230,14 @@ export default function BuscarCoche() {
       setEmpleado(res);
     }
     datosCoche();
-    console.log('Usando DB!');
+    // console.log('Usando DB!');
   }, []);
+  React.useEffect(() => {
+    setCargando(false);
+    setTimeout(() => {
+      setCargando(true);
+    }, 2000);
+  }, [nCoche]);
   function empleadoNombre(uid: string) {
     const pepe = empleado?.filter((emp) => emp.uid === uid);
     if (pepe[0]) {
@@ -244,7 +252,9 @@ export default function BuscarCoche() {
       .filter((a) => a.numCoche.includes(numero))
       .sort((a, b) => Number(a.numCoche) - Number(b.numCoche));
     // console.log(resultado);
-    setCochebuscador(resultado);
+    setTimeout(() => {
+      setCochebuscador(resultado);
+    }, 1000);
   }
   // console.log(coches);
   const handleChangeFechaInicio = (newValue: Dayjs | null) => {
@@ -307,13 +317,14 @@ export default function BuscarCoche() {
     }
   }
   function reset() {
+    setNcoche(0);
     setBusca(false), setResultado([]), setResultadoCoche([]);
     setFech1(dayjs(Date.now())), setFech2(dayjs(Date.now()));
     setDisabled(!disabled);
-
-    // setBusca(0);
     setBuscaMes(1);
   }
+  console.log(coches.length >= 50);
+  console.log(cocheBuscador.length >= 50);
   return (
     <>
       {/* <h2>Asistencias 2023</h2>
@@ -366,6 +377,7 @@ export default function BuscarCoche() {
           </LineChart>
         </ResponsiveContainer>
       </Container>
+      <h2>Búsqueda por período</h2>
       <h3>{`Desde:${fech1?.format('DD/MM/YY')} Hasta:${fech2?.format(
         'DD/MM/YY'
       )}`}</h3>
@@ -393,7 +405,6 @@ export default function BuscarCoche() {
                   minDate={dayjs('2023')}
                   maxDate={dayjs(fecha)}
                   label={'Mes y año'}
-                  views={['day', 'month', 'year']}
                   inputFormat="DD/MM/YYYY"
                   value={fech1}
                   onChange={handleChangeFechaInicio}
@@ -407,7 +418,6 @@ export default function BuscarCoche() {
                   minDate={dayjs(fech1)}
                   maxDate={dayjs(fecha)}
                   label={'Mes y año'}
-                  views={['day', 'month', 'year']}
                   inputFormat="DD/MM/YYYY"
                   value={fech2}
                   onChange={handleChangeFechaFin}
@@ -435,7 +445,7 @@ export default function BuscarCoche() {
             {resultado.length ? (
               <ul style={{ textAlign: 'left' }}>
                 {resultado.map((a) => (
-                  <li>{a}</li>
+                  <li key={a.toString()}>{a}</li>
                 ))}
               </ul>
             ) : (
@@ -492,30 +502,56 @@ export default function BuscarCoche() {
             label="Buscar coche"
             variant="outlined"
             disabled={!buscaMes}
-            value={Number(busca)}
+            value={nCoche}
             onChange={(e) => {
               setBusca(!busca);
               buscando(e.target.value);
+              setNcoche(Number(e.target.value));
             }}
           />
           <Button onClick={() => reset()}>Resetear</Button>
         </div>
 
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Coche</TableCell>
-              <TableCell align="center">Descripción</TableCell>
-              <TableCell align="center">Empresa</TableCell>
-              <TableCell align="right">Fecha</TableCell>
-              <TableCell align="center">Creado el</TableCell>
-              <TableCell align="right">Nombre y apellido</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {!busca
-              ? coches
-                  .map((row) => (
+        {cargando ? (
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Coche</TableCell>
+                <TableCell align="center">Descripción</TableCell>
+                <TableCell align="center">Empresa</TableCell>
+                <TableCell align="right">Fecha</TableCell>
+                <TableCell align="center">Creado el</TableCell>
+                <TableCell align="right">Nombre y apellido</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {!busca
+                ? coches
+                    .map((row) => (
+                      <TableRow
+                        key={Math.random()}
+                        sx={{
+                          '&:last-child td, &:last-child th': { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {row.numCoche}
+                        </TableCell>
+                        <TableCell align="left">{row.descripcion}</TableCell>
+                        <TableCell align="left">{row.empresa}</TableCell>
+                        <TableCell align="right">
+                          {dayjs(row.fecha).format('DD/MM/YY')}
+                        </TableCell>
+                        <TableCell align="center">
+                          {dayjs(row.createdAt).format('DD/MM HH:mm')}
+                        </TableCell>
+                        <TableCell align="right">
+                          {empleado ? empleadoNombre(row.uid) : 'Sin nombre'}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                    .slice(0, protoPaginacion)
+                : cocheBuscador.map((row) => (
                     <TableRow
                       key={Math.random()}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -535,31 +571,12 @@ export default function BuscarCoche() {
                         {empleado ? empleadoNombre(row.uid) : 'Sin nombre'}
                       </TableCell>
                     </TableRow>
-                  ))
-                  .slice(0, protoPaginacion)
-              : cocheBuscador.map((row) => (
-                  <TableRow
-                    key={Math.random()}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {row.numCoche}
-                    </TableCell>
-                    <TableCell align="left">{row.descripcion}</TableCell>
-                    <TableCell align="left">{row.empresa}</TableCell>
-                    <TableCell align="right">
-                      {dayjs(row.fecha).format('DD/MM/YY')}
-                    </TableCell>
-                    <TableCell align="center">
-                      {dayjs(row.createdAt).format('DD/MM HH:mm')}
-                    </TableCell>
-                    <TableCell align="right">
-                      {empleado ? empleadoNombre(row.uid) : 'Sin nombre'}
-                    </TableCell>
-                  </TableRow>
-                ))}
-          </TableBody>
-        </Table>
+                  ))}
+            </TableBody>
+          </Table>
+        ) : (
+          'Cargando...'
+        )}
       </TableContainer>
       <Button onClick={() => setProtoPaginacion(protoPaginacion + 25)}>
         Ver mas

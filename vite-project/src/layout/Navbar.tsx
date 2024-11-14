@@ -20,6 +20,7 @@ const settings = ['Perfil', 'Cuenta', 'Logout'];
 
 function ResponsiveAppBar() {
   const context = React.useContext(AuthContext);
+  const [disabled, setDisabled] = React.useState(false);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -41,7 +42,9 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  if (context?.user.uid === '7wMLEtiwdGfJjxxeNbuzQkcqnJ13') setDisabled(true);
 
+  console.log(disabled);
   return (
     <AppBar
       position="sticky"

@@ -58,10 +58,9 @@ const Home = () => {
       const response = await todosUsuarios();
       setRes(response);
       const data: Array<string> = [];
-      response
-        .filter((el) => el.uid !== '7wMLEtiwdGfJjxxeNbuzQkcqnJ13')
-        .forEach((el) => data.push(el.uid as string));
+      response.forEach((el) => data.push(el.uid as string));
       setEmpleados(data);
+
       // const datos = await obtenerAsistenciaCoche(); // Desact esto
       // setAsistencias(datos); //
     };
