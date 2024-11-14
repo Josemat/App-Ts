@@ -44,7 +44,6 @@ function ResponsiveAppBar() {
   };
   if (context?.user.uid === '7wMLEtiwdGfJjxxeNbuzQkcqnJ13') setDisabled(true);
 
-  console.log(disabled);
   return (
     <AppBar
       position="sticky"

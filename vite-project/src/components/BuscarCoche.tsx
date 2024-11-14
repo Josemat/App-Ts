@@ -323,8 +323,6 @@ export default function BuscarCoche() {
     setDisabled(!disabled);
     setBuscaMes(1);
   }
-  console.log(coches.length >= 50);
-  console.log(cocheBuscador.length >= 50);
   return (
     <>
       {/* <h2>Asistencias 2023</h2>

@@ -51,7 +51,7 @@ export function logout() {
       // Sign-out successful.
     })
     .catch((error) => {
-      console.log(error);
+      console.error(error);
       // An error happened.
     });
 }
