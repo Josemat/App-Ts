@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 import { useLocation } from 'wouter';
 import { AuthContext } from '../context/setAuth';
 import { CollectionData2, Perfil } from '../vite-env';
-import { Button, Container } from '@mui/material';
+import { Button, Container, Grid } from '@mui/material';
 import {
   PieChart,
   Pie,
@@ -380,109 +380,112 @@ export default function BuscarCoche() {
         'DD/MM/YY'
       )}`}</h3>
       <Container sx={{ backgroundColor: '', minHeight: '40vh' }}>
-        <div
+        {/* <div
           style={{
             backgroundColor: '',
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'row',
+            alignItems: 'center',
+            
           }}
-        >
-          <div
-            style={{
-              padding: '10px',
-              backgroundColor: '',
-              display: 'flex',
-              flexDirection: 'column',
-              height: '100%',
-            }}
-          >
-            <div style={{ marginTop: '10px', marginBottom: '10px' }}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DesktopDatePicker
-                  minDate={dayjs('2023')}
-                  maxDate={dayjs(fecha)}
-                  label={'Mes y año'}
-                  inputFormat="DD/MM/YYYY"
-                  value={fech1}
-                  onChange={handleChangeFechaInicio}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
+        > */}
+        <Grid container spacing={2}>
+          <Grid>
+            <div
+              style={{
+                padding: '10px',
+                backgroundColor: '',
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+              }}
+            >
+              <div style={{ marginTop: '10px', marginBottom: '10px' }}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DesktopDatePicker
+                    minDate={dayjs('2023')}
+                    maxDate={dayjs(fecha)}
+                    label={'Mes y año'}
+                    inputFormat="DD/MM/YYYY"
+                    value={fech1}
+                    onChange={handleChangeFechaInicio}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </div>
+              <div style={{ marginTop: '10px', marginBottom: '10px' }}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DesktopDatePicker
+                    minDate={dayjs(fech1)}
+                    maxDate={dayjs(fecha)}
+                    label={'Mes y año'}
+                    inputFormat="DD/MM/YYYY"
+                    value={fech2}
+                    onChange={handleChangeFechaFin}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </div>
+              <div style={{ display: 'flex' }}>
+                <Button onClick={() => reset()}>Resetear</Button>
+                <Button
+                  onClick={() => {
+                    buscandoMes(), setDisabled(!disabled);
+                  }}
+                  disabled={
+                    fech2?.format('DDMMYY') == fech1?.format('DDMMYY') ||
+                    !disabled
+                  }
+                >
+                  Aplicar filtro
+                </Button>
+              </div>
             </div>
-            <div style={{ marginTop: '10px', marginBottom: '10px' }}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DesktopDatePicker
-                  minDate={dayjs(fech1)}
-                  maxDate={dayjs(fecha)}
-                  label={'Mes y año'}
-                  inputFormat="DD/MM/YYYY"
-                  value={fech2}
-                  onChange={handleChangeFechaFin}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
+          </Grid>
+          <Grid>
+            <div style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+              <h2>Empresas:</h2>
+              {resultado.length ? (
+                <ul style={{ textAlign: 'left' }}>
+                  {resultado.map((a) => (
+                    <li key={a.toString()}>{a}</li>
+                  ))}
+                </ul>
+              ) : (
+                <></>
+              )}
             </div>
-            <div style={{ display: 'flex' }}>
-              <Button onClick={() => reset()}>Resetear</Button>
-              <Button
-                onClick={() => {
-                  buscandoMes(), setDisabled(!disabled);
-                }}
-                disabled={
-                  fech2?.format('DDMMYY') == fech1?.format('DDMMYY') ||
-                  !disabled
-                }
-              >
-                Aplicar filtro
-              </Button>
+          </Grid>
+          <Grid>
+            <div style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+              <h2>Colectivos:</h2>
+              {resultadoCoche.length ? (
+                <ul style={{ textAlign: 'left' }}>
+                  {resultadoCoche.map((a) => (
+                    <li key={a.toString()}>{a}</li>
+                  ))}
+                </ul>
+              ) : (
+                <></>
+              )}
             </div>
-          </div>
-          <div>
-            <h2>Empresas:</h2>
-            {resultado.length ? (
-              <ul style={{ textAlign: 'left' }}>
-                {resultado.map((a) => (
-                  <li key={a.toString()}>{a}</li>
-                ))}
-              </ul>
-            ) : (
-              <></>
-            )}
-          </div>
-          <div>
-            <h2>Colectivos:</h2>
-            {resultadoCoche.length ? (
-              <ul style={{ textAlign: 'left' }}>
-                {resultadoCoche.map((a) => (
-                  <li>{a}</li>
-                ))}
-              </ul>
-            ) : (
-              <></>
-            )}
-          </div>
-          <div
-            style={{
-              backgroundColor: '',
-            }}
-          >
-            {' '}
-            <PieChart width={400} height={400}>
+          </Grid>
+          <Grid>
+            <PieChart width={300} height={300}>
               <Pie
                 dataKey="value"
                 data={pie}
-                cx={200}
-                cy={200}
-                outerRadius={80}
+                outerRadius={100}
                 fill="#8884d8"
                 label
                 labelLine={false}
               />
               <Tooltip />
             </PieChart>
-          </div>
-        </div>
+          </Grid>
+        </Grid>
+        {/* </div> */}
       </Container>
       <h2>Búsqueda e historial de asistencias</h2>
       <TableContainer component={Paper}>

@@ -103,7 +103,7 @@ const Empleado: React.FC<PropsEmpleado> = ({
           </h3>
         ) : (
           <>
-            <h4 style={{ margin: '10px' }}>Total:{array.length} </h4>
+            <h3 style={{ margin: '10px' }}>Total:{array.length} </h3>
           </>
         )}
       </div>
