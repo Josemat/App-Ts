@@ -45,7 +45,7 @@ export default function BuscarCoche() {
   const [resultado, setResultado] = React.useState(['']);
   const [resultadoCoche, setResultadoCoche] = React.useState(['']);
   const [empleado, setEmpleado] = React.useState<Perfil[]>([]);
-  const [busca, setBusca] = React.useState<boolean>(false);
+  const [busca, setBusca] = React.useState(false);
   const [buscaMes, setBuscaMes] = React.useState<Number>(1);
   const [fech1, setFech1] = React.useState<Dayjs | null>(dayjs(fecha));
   const [fech2, setFech2] = React.useState<Dayjs | null>(dayjs(fecha));
@@ -232,12 +232,7 @@ export default function BuscarCoche() {
     datosCoche();
     // console.log('Usando DB!');
   }, []);
-  React.useEffect(() => {
-    setCargando(false);
-    setTimeout(() => {
-      setCargando(true);
-    }, 2000);
-  }, [nCoche]);
+
   function empleadoNombre(uid: string) {
     const pepe = empleado?.filter((emp) => emp.uid === uid);
     if (pepe[0]) {
@@ -251,20 +246,17 @@ export default function BuscarCoche() {
     const resultado: CollectionData2[] = coches
       .filter((a) => a.numCoche.includes(numero))
       .sort((a, b) => Number(a.numCoche) - Number(b.numCoche));
-    // console.log(resultado);
-    setTimeout(() => {
-      setCochebuscador(resultado);
-    }, 1000);
+    setCochebuscador(resultado);
+    setBusca(true);
   }
-  // console.log(coches);
+
   const handleChangeFechaInicio = (newValue: Dayjs | null) => {
     setFech1(newValue);
   };
   const handleChangeFechaFin = (newValue: Dayjs | null) => {
     setFech2(newValue);
   };
-  // console.log(fech1?.format('YYYYMMDD'));
-  // console.log(fech2?.format('YYYYMMDD'));
+
   function buscandoMes() {
     if (fech1 && fech2) {
       setBusca(!busca);

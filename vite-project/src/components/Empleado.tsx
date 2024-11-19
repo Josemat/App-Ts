@@ -86,8 +86,8 @@ const Empleado: React.FC<PropsEmpleado> = ({
           {nombre(`${user.nombre}`)}
         </h2>
         {window.screen.width > 800 ? (
-          <h3 style={{ margin: '10px' }}>
-            Asistencias
+          <>
+            <h3 style={{ margin: '10px' }}>Asistencias</h3>
             <h4 style={{ margin: '10px' }}>
               {`${dayjs().year()} `}(
               {
@@ -100,7 +100,7 @@ const Empleado: React.FC<PropsEmpleado> = ({
               )
             </h4>
             <h4 style={{ margin: '10px' }}>Total:{array.length} </h4>
-          </h3>
+          </>
         ) : (
           <>
             <h3 style={{ margin: '10px' }}>Total:{array.length} </h3>
