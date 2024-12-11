@@ -73,7 +73,8 @@ const Empleado: React.FC<PropsEmpleado> = ({
         >
           <Avatar
             alt={user.nombre}
-            src={user.avatar || user.nombre}
+            // Borrado de avatar Por el el bloqueo de GoogleAds
+            src={user.nombre}
             sx={{
               width: 100,
               height: 100,

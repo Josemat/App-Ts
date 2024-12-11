@@ -21,11 +21,11 @@ const NuevaAsistencia = () => {
   const [location, navigate] = useLocation();
   const [fech, setFech] = React.useState<Dayjs | null>(dayjs(fecha));
   const [asistencia, setAsistencia] = React.useState({
-    fecha: '' || fech?.format('YYYYMMDD'),
+    fecha: fech?.format('YYYYMMDD'),
     empresa: 'Otra',
     descripcion: '',
     numCoche: '',
-    uid: '' || context?.user.uid,
+    uid: context?.user.uid,
     createdAt: Date.now(),
   });
 
@@ -75,7 +75,7 @@ const NuevaAsistencia = () => {
       empresa: 'Otra',
       descripcion: '',
       numCoche: '',
-      uid: '' || context?.user.uid,
+      uid: context?.user.uid,
       createdAt: 0,
     });
   }
