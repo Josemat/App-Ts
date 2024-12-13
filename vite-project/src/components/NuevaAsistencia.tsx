@@ -30,7 +30,6 @@ const NuevaAsistencia = () => {
   });
 
   if (!context?.user.nombre) navigate('/');
-
   const InputStyle = {
     '& label.Mui-focused': {
       color: 'black',

@@ -42,8 +42,6 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  if (context?.user.uid === '7wMLEtiwdGfJjxxeNbuzQkcqnJ13') setDisabled(true);
-
   return (
     <AppBar
       position="sticky"
@@ -106,9 +104,16 @@ function ResponsiveAppBar() {
                 }}
               >
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <Link href="/asistencianueva">
-                    <Typography textAlign="center">Crear asistencia</Typography>
-                  </Link>
+                  {/* Aca tambien */}
+                  {context.user.uid === '7wMLEtiwdGfJjxxeNbuzQkcqnJ13' ? (
+                    ''
+                  ) : (
+                    <Link href="/asistencianueva">
+                      <Typography textAlign="center">
+                        Crear asistencia
+                      </Typography>
+                    </Link>
+                  )}
                 </MenuItem>
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Link href="/buscarcoche">
@@ -147,14 +152,18 @@ function ResponsiveAppBar() {
           >
             {context?.user.nombre ? (
               <>
-                <Link href="/asistencianueva">
-                  <Button
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                  >
-                    Crear asistencia
-                  </Button>
-                </Link>
+                {context.user.uid === '7wMLEtiwdGfJjxxeNbuzQkcqnJ13' ? (
+                  ''
+                ) : (
+                  <Link href="/asistencianueva">
+                    <Button
+                      onClick={handleCloseNavMenu}
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      Crear asistencia
+                    </Button>
+                  </Link>
+                )}
                 <Link href="/buscarcoche">
                   <Button
                     onClick={handleCloseNavMenu}
@@ -176,7 +185,10 @@ function ResponsiveAppBar() {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title={`Panel de ${context.user.nombre}`}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt={context.user.nombre} src={context.user.avatar} />
+                  <Avatar
+                    alt={context.user.avatar || context.user.nombre}
+                    src={context.user.avatar}
+                  />
                 </IconButton>
               </Tooltip>
               <Menu
