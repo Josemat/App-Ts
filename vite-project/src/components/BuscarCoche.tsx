@@ -342,7 +342,7 @@ export default function BuscarCoche() {
           </LineChart>
         </ResponsiveContainer>
       </Container> */}
-      <h2>Asistencias 2024</h2>
+      <h2>Asistencias {Number(dayjs(fecha).format('YYYY'))}</h2>
       <Container sx={{ backgroundColor: '', height: '40vh' }}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
@@ -361,7 +361,7 @@ export default function BuscarCoche() {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey={'Ersa'} stroke={'#ff0000'} />
+            {/* <Line type="monotone" dataKey={'Ersa'} stroke={'#ff0000'} /> */}
             <Line type="monotone" dataKey="Tamse" stroke="#00eeff" />
             <Line type="monotone" dataKey="Coniferal" stroke="#aca139" />
           </LineChart>
