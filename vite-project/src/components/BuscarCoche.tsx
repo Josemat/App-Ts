@@ -70,6 +70,7 @@ export default function BuscarCoche() {
         (asi) =>
           asi.empresa == empresa && Number(dayjs(asi.fecha).format('MM')) == mes
       ).length;
+    console.log(coches);
     return coche;
   }
   const data2023 = [
@@ -149,75 +150,99 @@ export default function BuscarCoche() {
   const data = [
     {
       name: 'Enero',
-      Ersa: buscarCocheGrafico('ERSA', 0o1),
+      Otro: buscarCocheGrafico('Otra', 0o1),
       Tamse: buscarCocheGrafico('TAMSE', 0o1),
       Coniferal: buscarCocheGrafico('CONIFERAL', 0o1),
+      SiBus: buscarCocheGrafico('SiBus', 0o1),
+      FAM: buscarCocheGrafico('FAM', 0o1),
     },
     {
       name: 'Febrero',
-      Ersa: buscarCocheGrafico('ERSA', 0o2),
+      Otro: buscarCocheGrafico('Otra', 0o2),
       Tamse: buscarCocheGrafico('TAMSE', 0o2),
       Coniferal: buscarCocheGrafico('CONIFERAL', 0o2),
+      SiBus: buscarCocheGrafico('SiBus', 0o2),
+      FAM: buscarCocheGrafico('FAM', 0o2),
     },
     {
       name: 'Marzo',
-      Ersa: buscarCocheGrafico('ERSA', 0o3),
+      Otro: buscarCocheGrafico('Otra', 0o3),
       Tamse: buscarCocheGrafico('TAMSE', 0o3),
       Coniferal: buscarCocheGrafico('CONIFERAL', 0o3),
+      SiBus: buscarCocheGrafico('SiBus', 0o3),
+      FAM: buscarCocheGrafico('FAM', 0o3),
     },
     {
       name: 'Abril',
-      Ersa: buscarCocheGrafico('ERSA', 0o4),
+      Otro: buscarCocheGrafico('Otra', 0o4),
       Tamse: buscarCocheGrafico('TAMSE', 0o4),
       Coniferal: buscarCocheGrafico('CONIFERAL', 0o4),
+      SiBus: buscarCocheGrafico('SiBus', 0o4),
+      FAM: buscarCocheGrafico('FAM', 0o4),
     },
     {
       name: 'Mayo',
-      Ersa: buscarCocheGrafico('ERSA', 0o5),
+      Otro: buscarCocheGrafico('Otra', 0o5),
       Tamse: buscarCocheGrafico('TAMSE', 0o5),
       Coniferal: buscarCocheGrafico('CONIFERAL', 0o5),
+      SiBus: buscarCocheGrafico('SiBus', 0o5),
+      FAM: buscarCocheGrafico('FAM', 0o5),
     },
     {
       name: 'Junio',
-      Ersa: buscarCocheGrafico('ERSA', 0o6),
+      Otro: buscarCocheGrafico('Otra', 0o6),
       Tamse: buscarCocheGrafico('TAMSE', 0o6),
       Coniferal: buscarCocheGrafico('CONIFERAL', 0o6),
+      SiBus: buscarCocheGrafico('SiBus', 0o6),
+      FAM: buscarCocheGrafico('FAM', 0o6),
     },
     {
       name: 'Julio',
-      Ersa: buscarCocheGrafico('ERSA', 0o7),
+      Otro: buscarCocheGrafico('Otra', 0o7),
       Tamse: buscarCocheGrafico('TAMSE', 0o7),
       Coniferal: buscarCocheGrafico('CONIFERAL', 0o7),
+      SiBus: buscarCocheGrafico('SiBus', 0o7),
+      FAM: buscarCocheGrafico('FAM', 0o7),
     },
     {
       name: 'Agosto',
-      Ersa: buscarCocheGrafico('ERSA', 8),
+      Otro: buscarCocheGrafico('Otra', 8),
       Tamse: buscarCocheGrafico('TAMSE', 8),
       Coniferal: buscarCocheGrafico('CONIFERAL', 8),
+      SiBus: buscarCocheGrafico('SiBus', 8),
+      FAM: buscarCocheGrafico('FAM', 8),
     },
     {
       name: 'Septiembre',
-      Ersa: buscarCocheGrafico('ERSA', 9),
+      Otro: buscarCocheGrafico('Otra', 9),
       Tamse: buscarCocheGrafico('TAMSE', 9),
       Coniferal: buscarCocheGrafico('CONIFERAL', 9),
+      SiBus: buscarCocheGrafico('SiBus', 9),
+      FAM: buscarCocheGrafico('FAM', 9),
     },
     {
       name: 'Octubre',
-      Ersa: buscarCocheGrafico('ERSA', 10),
+      Otro: buscarCocheGrafico('Otra', 10),
       Tamse: buscarCocheGrafico('TAMSE', 10),
       Coniferal: buscarCocheGrafico('CONIFERAL', 10),
+      SiBus: buscarCocheGrafico('SiBus', 10),
+      FAM: buscarCocheGrafico('FAM', 10),
     },
     {
       name: 'Noviembre',
-      Ersa: buscarCocheGrafico('ERSA', 11),
+      Otro: buscarCocheGrafico('Otra', 11),
       Tamse: buscarCocheGrafico('TAMSE', 11),
       Coniferal: buscarCocheGrafico('CONIFERAL', 11),
+      SiBus: buscarCocheGrafico('SiBus', 11),
+      FAM: buscarCocheGrafico('FAM', 11),
     },
     {
       name: 'Diciembre',
-      Ersa: buscarCocheGrafico('ERSA', 12),
+      Otro: buscarCocheGrafico('Otra', 12),
       Tamse: buscarCocheGrafico('TAMSE', 12),
       Coniferal: buscarCocheGrafico('CONIFERAL', 12),
+      SiBus: buscarCocheGrafico('SiBus', 12),
+      FAM: buscarCocheGrafico('FAM', 12),
     },
   ];
 
@@ -361,8 +386,10 @@ export default function BuscarCoche() {
             <YAxis />
             <Tooltip />
             <Legend />
-            {/* <Line type="monotone" dataKey={'Ersa'} stroke={'#ff0000'} /> */}
+            <Line type="monotone" dataKey="Otro" stroke={'#ff0000'} />
             <Line type="monotone" dataKey="Tamse" stroke="#00eeff" />
+            <Line type="monotone" dataKey="SiBus" stroke="#a018e4" />
+            <Line type="monotone" dataKey="FAM" stroke="#ee0d0a" />
             <Line type="monotone" dataKey="Coniferal" stroke="#aca139" />
           </LineChart>
         </ResponsiveContainer>

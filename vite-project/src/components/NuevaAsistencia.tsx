@@ -126,6 +126,12 @@ const NuevaAsistencia = () => {
                   label="CONIFERAL"
                 />
                 <FormControlLabel
+                  value="SiBus"
+                  control={<Radio />}
+                  label="SiBus"
+                />
+                <FormControlLabel value="FAM" control={<Radio />} label="FAM" />
+                <FormControlLabel
                   value="Otra"
                   control={<Radio />}
                   label="Otra"
