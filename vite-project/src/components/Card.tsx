@@ -22,6 +22,10 @@ export default function BasicCard(props: Props) {
       ? '/tamse.png'
       : empresaMinuscula === 'coniferal'
       ? '/coniferal.png'
+      : empresaMinuscula === 'sibus'
+      ? 'sibus.png'
+      : empresaMinuscula === 'fam'
+      ? '/fam.png'
       : '';
   return (
     <>
