@@ -157,9 +157,7 @@ const Perfil = () => {
             </InputLabel>
 
             <small style={{ marginTop: '20px', marginBottom: '10px' }}>
-              Recuerda sacar screen de tu POSICIÓN RESPECTO AL ÚLTIMO en la
-              lista. Caso contrario tu posicion será igual al último de la
-              misma.
+              No se guardan mas, tu posicion será igual al último.
             </small>
             <Select
               labelId="demo-simple-select-label"
